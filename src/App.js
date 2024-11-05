@@ -1,24 +1,24 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useState } from 'react';
 
 function App() {
+  const [values, setValues] = useState([]);
+
+  useEffect(() => {
+    fetch('/api/values')
+      .then(response => response.json())
+      .then(data => setValues(data))
+      .catch(error => console.log('Error getting data', error));
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <div>
+      <h1>Values</h1>
+      <ul>
+        {values.map(value => (
+          <li key={value}>{value}</li>
+        ))}
+      </ul>
+    </div> 
   );
 }
 
