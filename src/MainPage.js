@@ -1,29 +1,6 @@
+// src/MainPage.js
 import React, { useEffect, useState } from 'react';
-import { PublicClientApplication } from "@azure/msal-browser";
-import { MsalProvider, useIsAuthenticated, useMsal } from "@azure/msal-react";
-import { msalConfig } from "./authConfig";
-import LoginPage from "./LoginPage";
-
-// Initialize MSAL instance
-const msalInstance = new PublicClientApplication(msalConfig);
-
-function App() {
-    return (
-        <MsalProvider instance={msalInstance}>
-            <AuthContent />
-        </MsalProvider>
-    );
-}
-
-function AuthContent() {
-    const isAuthenticated = useIsAuthenticated();
-
-    return (
-        <>
-            {isAuthenticated ? <MainPage /> : <LoginPage />}
-        </>
-    );
-}
+import { useMsal } from "@azure/msal-react";
 
 function MainPage() {
     const [values, setValues] = useState([]);
@@ -32,19 +9,20 @@ function MainPage() {
     useEffect(() => {
         const fetchData = async () => {
             try {
+                // Get the active account (the logged-in user)
                 const account = instance.getActiveAccount();
                 if (!account) return;
 
-                // Acquire token to access the back-end API
+                // Acquire token silently for API call
                 const response = await instance.acquireTokenSilent({
-                    scopes: ["api://your-backend-client-id/.default"],
+                    scopes: ["api://72f0bd2e-7a5e-4a87-9980-9dda84c1a1ab/.default"],
                     account: account
                 });
 
                 const token = response.accessToken;
 
-                // Fetch data from the API with the access token
-                const res = await fetch('/api/values', {
+                // Fetch data from the back-end API using the acquired token
+                const res = await fetch("http://localhost:5000/api/values", {
                     headers: {
                         Authorization: `Bearer ${token}`
                     }
@@ -62,7 +40,9 @@ function MainPage() {
 
     return (
         <div>
-            <h1>Values</h1>
+            <h1>Main Page</h1>
+            <p>Welcome! You are successfully authenticated.</p>
+            <h2>Values from API:</h2>
             <ul>
                 {values.map((value, index) => (
                     <li key={index}>{value}</li>
@@ -72,4 +52,4 @@ function MainPage() {
     );
 }
 
-export default App;
+export default MainPage;
