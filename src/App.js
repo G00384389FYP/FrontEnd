@@ -3,6 +3,8 @@ import { PublicClientApplication } from "@azure/msal-browser";
 import { MsalProvider, useIsAuthenticated, useMsal } from "@azure/msal-react";
 import { msalConfig } from "./authConfig";
 import LoginPage from "./LoginPage";
+import MainPage from "./MainPage"; // Import MainPage from MainPage.js
+import UserProfileForm from './Components/UserProfileForm';
 
 // Initialize MSAL instance
 const msalInstance = new PublicClientApplication(msalConfig);
@@ -20,55 +22,11 @@ function AuthContent() {
 
     return (
         <>
-            {isAuthenticated ? <MainPage /> : <LoginPage />}
+        
+            {/* {isAuthenticated ? <MainPage /> : <LoginPage />} */}
+            {isAuthenticated ? <UserProfileForm /> : <LoginPage />}
+            {/* first one is once authenticated */}
         </>
-    );
-}
-
-function MainPage() {
-    const [values, setValues] = useState([]);
-    const { instance } = useMsal();
-
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const account = instance.getActiveAccount();
-                if (!account) return;
-
-                // Acquire token to access the back-end API
-                const response = await instance.acquireTokenSilent({
-                    scopes: ["api://your-backend-client-id/.default"],
-                    account: account
-                });
-
-                const token = response.accessToken;
-
-                // Fetch data from the API with the access token
-                const res = await fetch('/api/values', {
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    }
-                });
-
-                const data = await res.json();
-                setValues(data);
-            } catch (error) {
-                console.error('Error fetching data:', error);
-            }
-        };
-
-        fetchData();
-    }, [instance]);
-
-    return (
-        <div>
-            <h1>Values</h1>
-            <ul>
-                {values.map((value, index) => (
-                    <li key={index}>{value}</li>
-                ))}
-            </ul>
-        </div>
     );
 }
 
