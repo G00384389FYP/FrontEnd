@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 
 function UserProfileForm() {
     const [userDetails, setUserDetails] = useState({
-        userType: '',
-        displayName: '',
-        contactDetails: ''
+        Email: '',
+        Name: '',
+        PhoneNumber: ''
     });
 
     const handleChange = (e) => {
@@ -13,12 +13,12 @@ function UserProfileForm() {
             ...prevDetails,
             [name]: value
         }));
-        console.log('Updated User Details:', userDetails); 
+        console.log('Updated User Details:', userDetails);
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log('User Details before submit:', userDetails); 
+        console.log('User Details before submit:', userDetails);
         fetch('http://localhost:5001/api/user/addUser', {
             method: 'POST',
             headers: {
@@ -26,42 +26,43 @@ function UserProfileForm() {
             },
             body: JSON.stringify(userDetails)
         })
-        .then(response => response.json())
-        .then(data => console.log('Response from server:', data)) 
-        .catch(error => console.error('Error:', error)); 
+            .then(response => response.json())
+            .then(data => console.log('Response from server:', data))
+            .catch(error => console.error('Error:', error));
     };
 
     return (
         <form onSubmit={handleSubmit}>
-            <label>
-                User Type:
-                <select name="userType" value={userDetails.userType} onChange={handleChange}>
-                    <option value="">Select...</option>
-                    <option value="tradesman">Tradesman</option>
-                    <option value="customer">Customer</option>
-                </select>
-            </label>
-            <br />
-            <label>
-                Display Name:
+            <div>
+                <label htmlFor="Email">Email:</label>
                 <input
-                    type="text"
-                    name="displayName"
-                    value={userDetails.displayName}
+                    type="email"
+                    id="Email"
+                    name="Email"
+                    value={userDetails.Email}
                     onChange={handleChange}
                 />
-            </label>
-            <br />
-            <label>
-                Contact Details:
+            </div>
+            <div>
+                <label htmlFor="Name">Name:</label>
                 <input
                     type="text"
-                    name="contactDetails"
-                    value={userDetails.contactDetails}
+                    id="Name"
+                    name="Name"
+                    value={userDetails.Name}
                     onChange={handleChange}
                 />
-            </label>
-            <br />
+            </div>
+            <div>
+                <label htmlFor="PhoneNumber">Phone Number:</label>
+                <input
+                    type="tel"
+                    id="PhoneNumber"
+                    name="PhoneNumber"
+                    value={userDetails.PhoneNumber}
+                    onChange={handleChange}
+                />
+            </div>
             <button type="submit">Submit</button>
         </form>
     );
