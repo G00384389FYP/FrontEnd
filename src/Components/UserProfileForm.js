@@ -4,8 +4,9 @@ function UserProfileForm() {
     const [userDetails, setUserDetails] = useState({
         Email: '',
         Name: '',
-        PhoneNumber: ''
+        phone_number: ''
     });
+    const [errors, setErrors] = useState({});
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -13,11 +14,27 @@ function UserProfileForm() {
             ...prevDetails,
             [name]: value
         }));
-        console.log('Updated User Details:', userDetails);
+    };
+
+    const validate = () => {
+        const newErrors = {};
+        const phoneNumberPattern = /^[0-9]{10}$/; // validate phone number so it matches what backend is expecting (10 digits)
+
+
+        if (!phoneNumberPattern.test(userDetails.phone_number)) {
+            newErrors.phone_number = 'The phone number is not valid.';
+        }
+
+        setErrors(newErrors);
+        return Object.keys(newErrors).length === 0;
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        if (!validate()) {
+            return;
+        }
+
         console.log('User Details before submit:', userDetails);
         fetch('http://localhost:5001/api/user/addUser', {
             method: 'POST',
@@ -58,10 +75,11 @@ function UserProfileForm() {
                 <input
                     type="tel"
                     id="PhoneNumber"
-                    name="PhoneNumber"
-                    value={userDetails.PhoneNumber}
+                    name="phone_number"
+                    value={userDetails.phone_number}
                     onChange={handleChange}
                 />
+                {errors.phone_number && <span style={{ color: 'red' }}>{errors.phone_number}</span>}
             </div>
             <button type="submit">Submit</button>
         </form>
