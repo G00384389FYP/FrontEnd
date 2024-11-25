@@ -29,7 +29,8 @@ function AuthContent() {
         <>
             {isAuthenticated ? (
                 <Routes>
-                    <Route path="/" element={<Navigate to="/userProfileForm" />} />
+                    {/* <Route path="/" element={<Navigate to="/userProfileForm" />} /> */}
+                    <Route path="/userProfileForm" element={<UserProfileForm />} />
                     <Route path="/userProfileForm" element={<UserProfileForm />} />
                     <Route path="/myProfiles" element={<MyProfiles />} />
                     <Route path="/customerProfileCreate" element={<CustomerProfileCreate />} />
