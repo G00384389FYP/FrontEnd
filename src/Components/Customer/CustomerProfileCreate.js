@@ -1,94 +1,51 @@
 import React, { useState, useEffect } from 'react';
-import { useMsal } from "@azure/msal-react";
+import { useLocation } from 'react-router-dom';
 
-function CustomerProfileCreate({ localUserID }) {
-    const { accounts } = useMsal();
-    const userEmail = accounts[0] && accounts[0].username;
-
-    const [customerData, setCustomerData] = useState({
-        CustomerID: '',
-        UserID: localUserID || '',
-        cSuspended: false
-    });
+function CustomerProfileCreate() {
+    const location = useLocation();
+    const [userId, setUserId] = useState(null);
 
     useEffect(() => {
-        if (localUserID) {
-            setCustomerData(prevData => ({
-                ...prevData,
-                UserID: localUserID
-            }));
+        if (location.state && location.state.userID) {
+            setUserId(location.state.userID);
+        } else {
+            console.error('No userID found in location state');
         }
-    }, [localUserID]);
+    }, [location.state]);
 
-    const handleChange = (e) => {
-        const { name, value, type, checked } = e.target;
-        setCustomerData(prevData => ({
-            ...prevData,
-            [name]: type === 'checkbox' ? checked : value
-        }));
-    };
-
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        try {
-            const response = await fetch('http://localhost:5000/api/customerdata/addCustomer', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(customerData)
-            });
-
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-
-            const data = await response.json();
-            console.log('Response from server:', data);
-            alert('Customer profile created successfully!');
-        } catch (error) {
-            console.error('Error:', error);
-            alert(error.message);
+    const handleCreateCustomerProfile = () => {
+        if (!userId) {
+            console.error('User ID is not available');
+            return;
         }
+
+        const userIdInt = parseInt(userId, 10); // parse to int as post expects int        
+
+        fetch('http://localhost:5001/api/customer/createCustomerProfile', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ userId: userIdInt })
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Response from server:', data);
+                if (data.errors) {
+                    console.error('Validation errors:', data.errors);
+                } else if (data.Message) {
+                    console.log(data.Message);
+                } else {
+                    console.log('Customer profile created successfully!');
+                }
+            })
+            .catch(error => console.error('Error:', error));
     };
 
     return (
         <div>
             <h1>Create Customer Profile</h1>
-            <form onSubmit={handleSubmit}>
-                <label>
-                    Customer ID:
-                    <input
-                        type="text"
-                        name="CustomerID"
-                        value={customerData.CustomerID}
-                        onChange={handleChange}
-                        required
-                    />
-                </label>
-                <br />
-                <label>
-                    User ID:
-                    <input
-                        type="text"
-                        name="UserID"
-                        value={customerData.UserID}
-                        readOnly
-                    />
-                </label>
-                <br />
-                <label>
-                    Suspended:
-                    <input
-                        type="checkbox"
-                        name="cSuspended"
-                        checked={customerData.cSuspended}
-                        onChange={handleChange}
-                    />
-                </label>
-                <br />
-                <button type="submit">Create Profile</button>
-            </form>
+            <button onClick={handleCreateCustomerProfile}>Create Customer Account</button>
         </div>
     );
 }
