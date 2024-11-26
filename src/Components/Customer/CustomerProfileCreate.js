@@ -1,38 +1,35 @@
-import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 function CustomerProfileCreate() {
+    const navigate = useNavigate();
     const location = useLocation();
-    const [userId, setUserId] = useState(null);
+    const userID = location.state?.userID;
 
     useEffect(() => {
         if (location.state && location.state.userID) {
-            setUserId(location.state.userID);
-        } else {
-            console.error('No userID found in location state');
+            console.log('custprofCreate UserID:', location.state.userID);
         }
     }, [location.state]);
 
     const handleCreateCustomerProfile = () => {
-        if (!userId) {
+        if (!userID) {
             console.error('User ID is not available');
             return;
-        }
-
-        const userIdInt = parseInt(userId, 10); // parse to int as post expects int        
+        }        
 
         fetch('http://localhost:5001/api/customer/createCustomerProfile', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ userId: userIdInt })
+            body: JSON.stringify({ userId: userID }) 
         })
             .then(response => response.json())
             .then(data => {
-                console.log('Response from server:', data);
+                console.log('Response from server:', data); 
                 if (data.errors) {
-                    console.error('Validation errors:', data.errors);
+                    console.error('Validation errors:', data.errors); 
                 } else if (data.Message) {
                     console.log(data.Message);
                 } else {

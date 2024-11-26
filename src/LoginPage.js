@@ -33,7 +33,7 @@ function LoginPage() {
             const data = await response.json();
             // console.log('Response from backend:', data); // log response 
             let userID = data.userId;
-            console.log('UserId:', userID); // log the UserId from the response
+            // console.log('UserId:', userID); // log the UserId from the response
 
             if (response.status === 404) {
                 console.log('Email not found. redirect to create user');
