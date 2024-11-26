@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useMsal } from "@azure/msal-react";
 import { useNavigate } from 'react-router-dom';
+import './App.css'; 
 
 function LoginPage() {
     const { instance } = useMsal();
@@ -49,9 +50,14 @@ function LoginPage() {
     };
 
     return (
-        <div>
-            <h1>Login</h1>
-            <button onClick={handleLogin}>Sign In with Azure AD</button>
+        <div className="login-container">
+            <header className="login-header">
+                <h1>Nixers.ie</h1>
+            </header>
+            <div className="login-box">
+                <h2>Sign in with your email</h2>
+                <button onClick={handleLogin}>Login</button>
+            </div>
         </div>
     );
 }
