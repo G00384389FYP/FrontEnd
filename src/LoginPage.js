@@ -40,7 +40,7 @@ function LoginPage() {
                 navigate('userProfileForm')
             } else {
                 // email exists, log the user in and store userID
-                console.log('Email found. redirect to user profile');
+                // console.log('Email found. redirect to user profile');
                 navigate('myProfiles', { state: { userID } });
 
             }
