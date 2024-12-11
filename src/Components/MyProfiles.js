@@ -5,12 +5,15 @@ function MyProfiles() {
     const navigate = useNavigate();
     const location = useLocation();
     const userID = location.state?.userID;
+
     const [customerProfile, setCustomerProfile] = useState(null);
-    const [cxExists, setCxExists] = useState(null); 
+    const [cxExists, setCxExists] = useState(null);
+
+    const [customerJoinDate, setcustomerJoinDate] = useState(null);
 
     useEffect(() => {
         if (userID) {
-            console.log('My Profile UserID:', userID);
+            // console.log('My Profile UserID:', userID);
             checkCustomerProfile(userID);
         }
     }, [userID]);
@@ -25,19 +28,32 @@ function MyProfiles() {
                 body: JSON.stringify({ userId: userID })
             });
             const data = await response.json();
-            console.log('Response from backend:', data); 
+            console.log('Response from backend:', data);
             setCxExists(data.exists);
-            if (data.exists) {
-                setCustomerProfile(data.CustomerProfile);
-                console.log('Bosh Customer Profile Exists:', data.CustomerProfile);
+            // console.log(data.exists);            
+            if (data.exists == true) {
+                // console.log('data:', data);
+                // console.log('data.cust:', data.customerProfile);
+
+                let customerProfile = data.customerProfile;
+
+                console.log('customerProfile:', customerProfile);
+                console.log('customerProfile.values:', customerProfile.dateAdded);
+                let customerJoinDate = customerProfile.dateAdded;
+                console.log('join date :', customerJoinDate);
+
+                setCustomerProfile(customerProfile); // Update state
+
+
             } else {
                 setCustomerProfile(null);
                 console.log('Womp No customer profile found.');
             }
         } catch (error) {
-            console.error('Error checking customer profile:', error);
+            console.error('Error checking customer profile:');
         }
     };
+
 
     return (
         <div>
@@ -49,6 +65,12 @@ function MyProfiles() {
                     <div>
                         <h2>Customer Profile</h2>
                         <p>Data</p>
+                        <p>User ID: {customerProfile?.userId}</p>
+                        <p>Jobs Posted: {customerProfile?.jobsPosted}</p>
+                        <p>Is Suspended: {customerProfile?.isSuspended ? 'Yes' : 'No'}</p>
+                        <p>Date Added: {customerProfile?.dateAdded}</p>                       
+
+
                     </div>
                 ) : (
                     <button onClick={() => navigate('/customerProfileCreate', { state: { userID } })}>Create Customer Profile</button>
