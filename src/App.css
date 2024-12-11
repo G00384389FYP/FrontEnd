@@ -83,4 +83,50 @@ body, html {
   background-color: #0056b3;
 }
 
+.CustomerDetails{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f8d7da;
+  flex: 1;
+  margin: 0 10px;
+}
 
+.profiles-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.TradesmanProfile{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: orange;
+  flex: 1;
+  margin: 0 10px;
+}
+
+.profile-button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    margin: 10px 5px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.profile-button:hover {
+    background-color: #0056b3;
+}
+
+.CustomerDetails, .TradesmanProfile {
+    flex: 1;
+    margin: 0 10px;
+}

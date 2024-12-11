@@ -62,18 +62,41 @@ function MyProfiles() {
                 {cxExists === null ? (
                     <p>Loading...</p>
                 ) : cxExists ? (
-                    <div>
-                        <h2>Customer Profile</h2>
-                        <p>Data</p>
-                        <p>User ID: {customerProfile?.userId}</p>
-                        <p>Jobs Posted: {customerProfile?.jobsPosted}</p>
-                        <p>Is Suspended: {customerProfile?.isSuspended ? 'Yes' : 'No'}</p>
-                        <p>Date Added: {customerProfile?.dateAdded}</p>                       
-
-
+                    <div className='profiles-container'>
+                        <div className='CustomerDetails'>
+                            <h2>Customer Profile</h2>
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <td>User ID:</td>
+                                        <td>{customerProfile?.userId}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Jobs Posted:</td>
+                                        <td>{customerProfile?.jobsPosted}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Is Suspended:</td>
+                                        <td>{customerProfile?.isSuspended ? 'Yes' : 'No'}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Date Added:</td>
+                                        <td>{customerProfile?.dateAdded}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <button className='profile-button'>Post a new Job</button>
+                            <button className='profile-button'>See my Jobs</button>
+                        </div>
+                        <div className='TradesmanProfile'>
+                            <h2>Tradesman Profile</h2>
+                            {/* Add Tradesman Profile details here */}
+                        </div>
                     </div>
                 ) : (
-                    <button onClick={() => navigate('/customerProfileCreate', { state: { userID } })}>Create Customer Profile</button>
+                    <button onClick={() => navigate('/customerProfileCreate', { state: { userID } })}>
+                        Create Customer Profile
+                    </button>
                 )}
             </div>
         </div>
