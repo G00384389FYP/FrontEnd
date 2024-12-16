@@ -7,3 +7,6 @@
 
 In the package.json file of React app
 "proxy": "http://localhost:5000"
+
+
+npm install @mui/material @emotion/react @emotion/styled

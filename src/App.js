@@ -9,6 +9,7 @@ import MyProfiles from './Components/MyProfiles';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import CustomerProfileCreate from './Components/Customer/CustomerProfileCreate';
 import Home from './Components/Home';
+import JobPosting from './Components/JobPosting';
 
 // Initialize MSAL instance
 const msalInstance = new PublicClientApplication(msalConfig);
@@ -35,6 +36,7 @@ function AuthContent() {
                     <Route path="/userProfileForm" element={<UserProfileForm />} />
                     <Route path="/myProfiles" element={<MyProfiles />} />
                     <Route path="/customerProfileCreate" element={<CustomerProfileCreate />} />
+                    <Route path="/job-posting" element={<JobPosting />} />
                 </Routes>
             ) : (
                 <Routes>
