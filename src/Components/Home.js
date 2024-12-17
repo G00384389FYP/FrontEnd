@@ -70,7 +70,7 @@ const Home = () => {
                             <CardMedia
                                 component="img"
                                 height="140"
-                                image="/tradesman_img.jpg"
+                                 image=""
                                 alt="contact img"
                             />
                             <CardContent>

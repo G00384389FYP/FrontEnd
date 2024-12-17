@@ -2,14 +2,15 @@ import React from 'react';
 import { PublicClientApplication } from "@azure/msal-browser";
 import { MsalProvider, useIsAuthenticated } from "@azure/msal-react";
 import { msalConfig } from "./authConfig";
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+import { UserProvider } from './UserContext';
 import LoginPage from "./LoginPage";
-
 import UserProfileForm from './Components/UserProfileForm';
 import MyProfiles from './Components/MyProfiles';
-import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import CustomerProfileCreate from './Components/Customer/CustomerProfileCreate';
 import Home from './Components/Home';
 import JobPosting from './Components/JobPosting';
+import Navbar from './Components/Navbar';
 
 // Initialize MSAL instance
 const msalInstance = new PublicClientApplication(msalConfig);
@@ -17,9 +18,12 @@ const msalInstance = new PublicClientApplication(msalConfig);
 function App() {
     return (
         <MsalProvider instance={msalInstance}>
-            <Router>
-                <AuthContent />
-            </Router>
+            <UserProvider>
+                <Router>
+                    <Navbar />
+                    <AuthContent />
+                </Router>
+            </UserProvider>
         </MsalProvider>
     );
 }
@@ -31,8 +35,7 @@ function AuthContent() {
         <>
             {isAuthenticated ? (
                 <Routes>
-                    <Route path="/" element={<Home/>} />
-                    <Route path="/userProfileForm" element={<UserProfileForm />} />
+                    <Route path="/" element={<Home />} />
                     <Route path="/userProfileForm" element={<UserProfileForm />} />
                     <Route path="/myProfiles" element={<MyProfiles />} />
                     <Route path="/customerProfileCreate" element={<CustomerProfileCreate />} />
