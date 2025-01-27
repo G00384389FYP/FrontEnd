@@ -34,6 +34,7 @@ function CustomerProfileCreate() {
                     console.log(data.Message);
                 } else {
                     console.log('Customer profile created successfully!');
+                    navigate('/myProfiles', { state: { userID } });
                 }
             })
             .catch(error => console.error('Error:', error));

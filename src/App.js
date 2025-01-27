@@ -11,6 +11,7 @@ import CustomerProfileCreate from './Components/Customer/CustomerProfileCreate';
 import Home from './Components/Home';
 import JobPosting from './Components/JobPosting';
 import Navbar from './Components/Navbar';
+import TradesmanProfileCreate from './Components/TradesmanProfileCreate';
 
 // Initialize MSAL instance
 const msalInstance = new PublicClientApplication(msalConfig);
@@ -40,6 +41,7 @@ function AuthContent() {
                     <Route path="/myProfiles" element={<MyProfiles />} />
                     <Route path="/customerProfileCreate" element={<CustomerProfileCreate />} />
                     <Route path="/job-posting" element={<JobPosting />} />
+                    <Route path="/tradesmanProfileCreate" element={<TradesmanProfileCreate />} />
                 </Routes>
             ) : (
                 <Routes>

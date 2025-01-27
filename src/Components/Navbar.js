@@ -20,6 +20,7 @@ const Navbar = () => {
                 <li>
                     <Link to="/myProfiles">My Profiles</Link>
                 </li>                
+                                
             </ul>
         </nav>
     );

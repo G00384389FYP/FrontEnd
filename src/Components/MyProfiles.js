@@ -13,7 +13,7 @@ function MyProfiles() {
 
     useEffect(() => {
         if (userID) {
-            // console.log('My Profile UserID:', userID);
+            console.log('My Profile UserID:', userID);
             checkCustomerProfile(userID);
         }
     }, [userID]);
@@ -85,12 +85,15 @@ function MyProfiles() {
                                     </tr>
                                 </tbody>
                             </table>
-                            <button className='profile-button'>Post a new Job</button>
+                            <button className='profile-button'onClick={() => navigate('/job-posting')}>Post a new Job</button>
                             <button className='profile-button'>See my Jobs</button>
                         </div>
                         <div className='TradesmanProfile'>
                             <h2>Tradesman Profile</h2>
                             {/* Add Tradesman Profile details here */}
+                            <button className='profile-button' onClick={() => navigate('/tradesmanProfileCreate', { state: { userID } })}>
+                                Create Tradesman Profile
+                            </button>
                         </div>
                     </div>
                 ) : (
