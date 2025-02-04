@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import React, { useState, useEffect, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { UserContext } from '../UserContext';
 
 function MyProfiles() {
     const navigate = useNavigate();
-    const location = useLocation();
-    const userID = location.state?.userID;
+    const { userId } = useContext(UserContext);
 
     const [customerProfile, setCustomerProfile] = useState(null);
     const [cxExists, setCxExists] = useState(null);
@@ -14,21 +14,21 @@ function MyProfiles() {
     const [txExists, setTxExists] = useState(null);
 
     useEffect(() => {
-        if (userID) {
-            console.log('My Profile UserID:', userID);
-            checkCustomerProfile(userID);
-            checkTradesmanProfile(userID);
+        if (userId) {
+            console.log('My Profile UserID:', userId);
+            checkCustomerProfile(userId);
+            checkTradesmanProfile(userId);
         }
-    }, [userID]);
+    }, [userId]);
 
-    const checkCustomerProfile = async (userID) => {
+    const checkCustomerProfile = async (userId) => {
         try {
             const response = await fetch('http://localhost:5001/api/customer/checkCustomerProfile', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ userId: userID })
+                body: JSON.stringify({ userId })
             });
             const data = await response.json();
             console.log('Response from backend:', data);
@@ -44,14 +44,14 @@ function MyProfiles() {
         }
     };
 
-    const checkTradesmanProfile = async (userID) => {
+    const checkTradesmanProfile = async (userId) => {
         try {
             const response = await fetch('http://localhost:5001/api/tradesman/checkTradesmanProfile', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ userId: userID })
+                body: JSON.stringify({ userId })
             });
             const data = await response.json();
             console.log('Response from backend:', data);
@@ -131,14 +131,14 @@ function MyProfiles() {
                                     </tbody>
                                 </table>
                             ) : (
-                                <button className='profile-button' onClick={() => navigate('/tradesmanProfileCreate', { state: { userID } })}>
+                                <button className='profile-button' onClick={() => navigate('/tradesmanProfileCreate', { state: { userId } })}>
                                     Create Tradesman Profile
                                 </button>
                             )}
                         </div>
                     </div>
                 ) : (
-                    <button onClick={() => navigate('/customerProfileCreate', { state: { userID } })}>
+                    <button onClick={() => navigate('/customerProfileCreate', { state: { userId } })}>
                         Create Customer Profile
                     </button>
                 )}
