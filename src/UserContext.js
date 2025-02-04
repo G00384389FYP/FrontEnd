@@ -1,15 +1,21 @@
-import React, { createContext, useState, useContext } from 'react';
+import { createContext, useState, useEffect } from "react";
 
-const UserContext = createContext();
+export const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
-    const [userID, setUserID] = useState(null);
+  const [userId, setUserId] = useState(sessionStorage.getItem("userId") || null);
 
-    return (
-        <UserContext.Provider value={{ userID, setUserID }}>
-            {children}
-        </UserContext.Provider>
-    );
+  useEffect(() => {
+    if (userId) {
+      sessionStorage.setItem("userId", userId);
+    } else {
+      sessionStorage.removeItem("userId");
+    }
+  }, [userId]);
+
+  return (
+    <UserContext.Provider value={{ userId, setUserId }}>
+      {children}
+    </UserContext.Provider>
+  );
 };
-
-export const useUser = () => useContext(UserContext);

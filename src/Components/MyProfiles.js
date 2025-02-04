@@ -8,13 +8,16 @@ function MyProfiles() {
 
     const [customerProfile, setCustomerProfile] = useState(null);
     const [cxExists, setCxExists] = useState(null);
-
     const [customerJoinDate, setcustomerJoinDate] = useState(null);
+
+    const [tradesmanProfile, setTradesmanProfile] = useState(null);
+    const [txExists, setTxExists] = useState(null);
 
     useEffect(() => {
         if (userID) {
             console.log('My Profile UserID:', userID);
             checkCustomerProfile(userID);
+            checkTradesmanProfile(userID);
         }
     }, [userID]);
 
@@ -30,30 +33,38 @@ function MyProfiles() {
             const data = await response.json();
             console.log('Response from backend:', data);
             setCxExists(data.exists);
-            // console.log(data.exists);            
-            if (data.exists == true) {
-                // console.log('data:', data);
-                // console.log('data.cust:', data.customerProfile);
-
-                let customerProfile = data.customerProfile;
-
-                console.log('customerProfile:', customerProfile);
-                console.log('customerProfile.values:', customerProfile.dateAdded);
-                let customerJoinDate = customerProfile.dateAdded;
-                console.log('join date :', customerJoinDate);
-
-                setCustomerProfile(customerProfile); // Update state
-
-
+            if (data.exists) {
+                setCustomerProfile(data.customerProfile);
+                setcustomerJoinDate(data.customerProfile.dateAdded);
             } else {
                 setCustomerProfile(null);
-                console.log('Womp No customer profile found.');
             }
         } catch (error) {
-            console.error('Error checking customer profile:');
+            console.error('Error checking customer profile:', error);
         }
     };
 
+    const checkTradesmanProfile = async (userID) => {
+        try {
+            const response = await fetch('http://localhost:5001/api/tradesman/checkTradesmanProfile', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ userId: userID })
+            });
+            const data = await response.json();
+            console.log('Response from backend:', data);
+            setTxExists(data.exists);
+            if (data.exists) {
+                setTradesmanProfile(data.tradesmanProfile);
+            } else {
+                setTradesmanProfile(null);
+            }
+        } catch (error) {
+            console.error('Error checking tradesman profile:', error);
+        }
+    };
 
     return (
         <div>
@@ -85,15 +96,45 @@ function MyProfiles() {
                                     </tr>
                                 </tbody>
                             </table>
-                            <button className='profile-button'onClick={() => navigate('/job-posting')}>Post a new Job</button>
+                            <button className='profile-button' onClick={() => navigate('/job-posting')}>Post a new Job</button>
                             <button className='profile-button'>See my Jobs</button>
                         </div>
                         <div className='TradesmanProfile'>
                             <h2>Tradesman Profile</h2>
-                            {/* Add Tradesman Profile details here */}
-                            <button className='profile-button' onClick={() => navigate('/tradesmanProfileCreate', { state: { userID } })}>
-                                Create Tradesman Profile
-                            </button>
+                            {txExists ? (
+                                <table>
+                                    <tbody>
+                                        <tr>
+                                            <td>Trade:</td>
+                                            <td>{tradesmanProfile?.trade}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Location:</td>
+                                            <td>{tradesmanProfile?.location}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Number of Jobs Completed:</td>
+                                            <td>{tradesmanProfile?.numberOfJobsCompleted}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Trade Bio:</td>
+                                            <td>{tradesmanProfile?.tradeBio}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Work Distance:</td>
+                                            <td>{tradesmanProfile?.workDistance} km</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Date Joined:</td>
+                                            <td>{tradesmanProfile?.dateJoined}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            ) : (
+                                <button className='profile-button' onClick={() => navigate('/tradesmanProfileCreate', { state: { userID } })}>
+                                    Create Tradesman Profile
+                                </button>
+                            )}
                         </div>
                     </div>
                 ) : (

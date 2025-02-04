@@ -10,3 +10,6 @@ In the package.json file of React app
 
 
 npm install @mui/material @emotion/react @emotion/styled
+
+npm install @reduxjs/toolkit react-redux
+installing to manage global variables that need to be shared across components

@@ -1,125 +1,69 @@
-import React, { useState } from 'react';
-import { useUser } from '../UserContext';
+import React, { useState, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { UserContext } from '../UserContext';
 
-const JobPosting = () => {
-    const { userID } = useUser();
-    const [jobTitle, setJobTitle] = useState('');
-    const [jobDescription, setJobDescription] = useState('');
-    const [tradesRequired, setTradesRequired] = useState('');
-    const [location, setLocation] = useState('');
-    const [jobMedia, setJobMedia] = useState('');
-    const [jobStatus, setJobStatus] = useState('Open');
-    const [assignedTradesman, setAssignedTradesman] = useState(null);
+function JobPosting() {
+    const { userId } = useContext(UserContext);
+    const [jobDetails, setJobDetails] = useState({
+        UserId: userId,
+        JobTitle: '',
+        JobDescription: '',
+        TradesRequired: 'Plumber',
+        JobLocation: 'Dublin'
+    });
+    const navigate = useNavigate();
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setJobDetails(prevDetails => ({
+            ...prevDetails,
+            [name]: value
+        }));
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const jobData = {
-            userId: userID,
-            jobTitle,
-            jobDescription,
-            tradesRequired,
-            location,
-            jobMedia,
-            datePosted: new Date(),
-            jobStatus,
-            assignedTradesman
-        };
+        if (!userId) {
+            console.error('User ID is not available');
+            return;
+        }
+
+        const requestData = { ...jobDetails, UserId: userId };
 
         try {
-            const response = await fetch('/api/job/postJob', {
+            const response = await fetch('http://localhost:3000/api/jobs/createJob', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
+                    'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(jobData),
+                body: JSON.stringify(requestData)
             });
-            if (response.ok) {
-                console.log('Job posted successfully');
-                // Reset form fields
-                setJobTitle('');
-                setJobDescription('');
-                setTradesRequired('');
-                setLocation('');
-                setJobMedia('');
-                setJobStatus('Open');
-                setAssignedTradesman(null);
-            } else {
-                console.error('Failed to post job');
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
             }
+
+            const data = await response.json();
+            console.log('Job created successfully:', data);
+            navigate('/jobs');
         } catch (error) {
-            console.error('Error posting job:', error);
+            console.error('Error creating job:', error);
         }
     };
 
     return (
-        <div>
-            <h1>Post a New Job</h1>
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <label>Job Title:</label>
-                    <input
-                        type="text"
-                        value={jobTitle}
-                        onChange={(e) => setJobTitle(e.target.value)}
-                        required
-                    />
-                </div>
-                <div>
-                    <label>Job Description:</label>
-                    <textarea
-                        value={jobDescription}
-                        onChange={(e) => setJobDescription(e.target.value)}
-                        required
-                    />
-                </div>
-                <div>
-                    <label>Trades Required:</label>
-                    <input
-                        type="text"
-                        value={tradesRequired}
-                        onChange={(e) => setTradesRequired(e.target.value)}
-                        required
-                    />
-                </div>
-                <div>
-                    <label>Location:</label>
-                    <input
-                        type="text"
-                        value={location}
-                        onChange={(e) => setLocation(e.target.value)}
-                        required
-                    />
-                </div>
-                <div>
-                    <label>Job Media (optional):</label>
-                    <input
-                        type="text"
-                        value={jobMedia}
-                        onChange={(e) => setJobMedia(e.target.value)}
-                    />
-                </div>
-                <div>
-                    <label>Job Status:</label>
-                    <select
-                        value={jobStatus}
-                        onChange={(e) => setJobStatus(e.target.value)}
-                    >
-                        <option value="Open">Open</option>
-                        <option value="Closed">Closed</option>
-                    </select>
-                </div>
-                <div>
-                    <label>Assigned Tradesman (optional):</label>
-                    <input
-                        type="number"
-                        value={assignedTradesman || ''}
-                        onChange={(e) => setAssignedTradesman(e.target.value ? parseInt(e.target.value) : null)}
-                    />
-                </div>
-                <button type="submit">Post Job</button>
-            </form>
-        </div>
+        <form onSubmit={handleSubmit}>
+            <input type="text" name="JobTitle" value={jobDetails.JobTitle} onChange={handleChange} placeholder="Job Title" />
+            <textarea name="JobDescription" value={jobDetails.JobDescription} onChange={handleChange} placeholder="Job Description"></textarea>
+            <select name="TradesRequired" value={jobDetails.TradesRequired} onChange={handleChange}>
+                <option value="Plumber">Plumber</option>
+                <option value="Electrician">Electrician</option>
+                <option value="Carpenter">Carpenter</option>
+            </select>
+            <input type="text" name="JobLocation" value={jobDetails.JobLocation} onChange={handleChange} placeholder="Job Location" />
+            <button type="submit">Create Job</button>
+        </form>
     );
-};
+}
 
 export default JobPosting;

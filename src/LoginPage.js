@@ -1,12 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useMsal } from "@azure/msal-react";
 import { useNavigate } from 'react-router-dom';
 import './App.css'; 
+import { UserContext } from './UserContext';
 
 function LoginPage() {
     const { instance } = useMsal();
     const navigate = useNavigate();
-    const [userID, setUserID] = useState(null);
+    const { setUserId } = useContext(UserContext);
 
     const handleLogin = async () => {
         try {
@@ -17,7 +18,6 @@ function LoginPage() {
             console.error('Error during login:', error);
         }
     };
-
 
     const checkUserEmail = async (email) => {
         try {
@@ -41,6 +41,10 @@ function LoginPage() {
 
             const data = await response.json();
             let userID = data.userId;
+
+            // Set the userId in UserContext
+            setUserId(userID);
+            console.log('setting UserID:', userID);
 
             // Email exists, log the user in and store userID
             navigate('myProfiles', { state: { userID } });
