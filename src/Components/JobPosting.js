@@ -52,17 +52,20 @@ function JobPosting() {
     };
 
     return (
-        <form onSubmit={handleSubmit}>
-            <input type="text" name="JobTitle" value={jobDetails.JobTitle} onChange={handleChange} placeholder="Job Title" />
-            <textarea name="JobDescription" value={jobDetails.JobDescription} onChange={handleChange} placeholder="Job Description"></textarea>
-            <select name="TradesRequired" value={jobDetails.TradesRequired} onChange={handleChange}>
-                <option value="Plumber">Plumber</option>
-                <option value="Electrician">Electrician</option>
-                <option value="Carpenter">Carpenter</option>
-            </select>
-            <input type="text" name="JobLocation" value={jobDetails.JobLocation} onChange={handleChange} placeholder="Job Location" />
-            <button type="submit">Create Job</button>
-        </form>
+        <div className="job-posting-container">
+            <form className="job-posting-form" onSubmit={handleSubmit}>
+                <h2>Create Job Posting</h2>
+                <input type="text" name="JobTitle" value={jobDetails.JobTitle} onChange={handleChange} placeholder="Job Title" className="form-input" />
+                <textarea name="JobDescription" value={jobDetails.JobDescription} onChange={handleChange} placeholder="Job Description" className="form-textarea"></textarea>
+                <select name="TradesRequired" value={jobDetails.TradesRequired} onChange={handleChange} className="form-select">
+                    <option value="Plumber">Plumber</option>
+                    <option value="Electrician">Electrician</option>
+                    <option value="Carpenter">Carpenter</option>
+                </select>
+                <input type="text" name="JobLocation" value={jobDetails.JobLocation} onChange={handleChange} placeholder="Job Location" className="form-input" />
+                <button type="submit" className="form-button">Create Job</button>
+            </form>
+        </div>
     );
 }
 
