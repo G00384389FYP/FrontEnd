@@ -292,3 +292,10 @@ body, html {
   background-color: #0056b3;
 }
 
+.job-switch {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+  /* padding: 10px; */
+}

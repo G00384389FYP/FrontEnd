@@ -7,6 +7,7 @@ import Typography from '@mui/material/Typography';
 import CardActionArea from '@mui/material/CardActionArea';
 import { UserContext } from '../UserContext';
 import './ViewJobs.css';
+import JobSwitch from './JobSwitch';
 
 function ViewJobs() {
     const [jobs, setJobs] = useState([]);
@@ -16,7 +17,7 @@ function ViewJobs() {
     useEffect(() => {
         const fetchJobs = async () => {
             try {
-                const response = await fetch('http://localhost:5001/api/jobs/getJobs');
+                const response = await fetch('http://localhost:3000/api/jobs/getJobs');
                 const data = await response.json();
                 setJobs(data);
             } catch (error) {
@@ -42,37 +43,42 @@ function ViewJobs() {
 
     return (
         <div>
-
-            {displayedJobs.map((job) => (
-                <Card key={job.id} className="job-card">
-                    <CardActionArea onClick={() => handleApplyJob(job.id)}>
-                        <CardMedia
-                            component="img"
-                            height="140"
-                            image="https://via.placeholder.com/140"
-                            alt="job image"
-                        />
-                        <CardContent>
-                            <Typography gutterBottom variant="h5" component="div">
-                                {job.jobTitle}
-                            </Typography>
-                            <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                                {job.jobDescription}
-                            </Typography>
-                            <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                                Job Title: {job.jobTitle}
-                            </Typography>
-                            <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                                Location: {job.jobLocation}
-                            </Typography>
-                            <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                                Trade Required: {job.tradesRequired}
-                            </Typography>
-                        </CardContent>
-                    </CardActionArea>
-                </Card>
-            ))}
-
+            <div className='job-switch' >
+                <JobSwitch />
+            </div>
+            <div className="view-jobs-container">
+                <div className="header">
+                    <h1>Available Jobs</h1>
+                </div>
+                <div className="cards-container">
+                    {displayedJobs.map((job) => (
+                        <Card key={job.id} className="job-card">
+                            <CardActionArea onClick={() => handleApplyJob(job.id)}>
+                                <CardMedia
+                                    component="img"
+                                    height="140"
+                                    image="https://via.placeholder.com/140"
+                                    alt="job image"
+                                />
+                                <CardContent className="job-card-content">
+                                    <Typography gutterBottom variant="h5" component="div" className="job-card-title">
+                                        {job.jobTitle}
+                                    </Typography>
+                                    <Typography variant="body2" className="job-card-description">
+                                        {job.jobDescription}
+                                    </Typography>
+                                    <Typography variant="body2" className="job-card-details">
+                                        Location: {job.jobLocation}
+                                    </Typography>
+                                    <Typography variant="body2" className="job-card-details">
+                                        Trade Required: {job.tradesRequired}
+                                    </Typography>
+                                </CardContent>
+                            </CardActionArea>
+                        </Card>
+                    ))}
+                </div>
+            </div>
         </div>
     );
 }
