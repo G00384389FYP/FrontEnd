@@ -42,7 +42,7 @@ function TradesmanProfileCreate() {
         console.log('Sending POST request with data:', requestData);
 
         try {
-            const response = await fetch('http://localhost:5001/api/tradesman/createTradesmanProfile', {
+            const response = await fetch('http://localhost:5001/tradies/add', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

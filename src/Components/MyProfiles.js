@@ -23,7 +23,7 @@ function MyProfiles() {
 
     const checkCustomerProfile = async (userId) => {
         try {
-            const response = await fetch('http://localhost:5001/api/customer/checkCustomerProfile', {
+            const response = await fetch('http://localhost:5001/customers/check', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -46,7 +46,7 @@ function MyProfiles() {
 
     const checkTradesmanProfile = async (userId) => {
         try {
-            const response = await fetch('http://localhost:5001/api/tradesman/checkTradesmanProfile', {
+            const response = await fetch('http://localhost:5001/tradies/check', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -71,7 +71,10 @@ function MyProfiles() {
             <h1>My Profiles</h1>
             <div>
                 {cxExists === null ? (
-                    <p>Loading...</p>
+                    <div>
+                        <p>Loading...</p>
+                        <p>Contacting Database</p>
+                    </div>
                 ) : cxExists ? (
                     <div className='profiles-container'>
                         <div className='CustomerDetails'>

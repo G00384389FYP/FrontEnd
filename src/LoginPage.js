@@ -21,7 +21,8 @@ function LoginPage() {
 
     const checkUserEmail = async (email) => {
         try {
-            const response = await fetch('http://localhost:5001/api/user/checkEmail', {
+            // const response = await fetch('http://localhost:5001/users/user/check', {
+            const response = await fetch('http://localhost:5001/users/check', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

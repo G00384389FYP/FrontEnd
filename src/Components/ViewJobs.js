@@ -17,9 +17,10 @@ function ViewJobs() {
     useEffect(() => {
         const fetchJobs = async () => {
             try {
-                const response = await fetch('http://localhost:3000/api/jobs/getJobs');
+                const response = await fetch('http://localhost:3000/jobs/get');
                 const data = await response.json();
                 setJobs(data);
+                console.log('Jobs:', data);
             } catch (error) {
                 console.error('Error fetching jobs:', error);
             }
@@ -32,13 +33,10 @@ function ViewJobs() {
         if (!userId) {
             console.error('User ID is not available');
             return;
-        }
-
-        // Navigate to a job application page or handle job application logic here
+        }    
         navigate(`/applyJob/${jobId}`, { state: { userId } });
     };
 
-    // Directly use jobs without filtering
     const displayedJobs = jobs;
 
     return (
@@ -57,7 +55,8 @@ function ViewJobs() {
                                 <CardMedia
                                     component="img"
                                     height="140"
-                                    image="https://via.placeholder.com/140"
+                                    // image="https://nixersstorage.blob.core.windows.net/blob-test/test"
+                                    image={job.jobImage}
                                     alt="job image"
                                 />
                                 <CardContent className="job-card-content">

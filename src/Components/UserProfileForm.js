@@ -46,7 +46,7 @@ function UserProfileForm() {
 
         console.log('User Details before submit:', userDetails);
         try {
-            const response = await fetch('http://localhost:5001/api/user/addUser', {
+            const response = await fetch('http://localhost:5001/users/add', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
