@@ -32,7 +32,7 @@ function JobPosting() {
         const requestData = { ...jobDetails, UserId: userId };
 
         try {
-            const response = await fetch('http://localhost:3000/jobs/add', {
+            const response = await fetch('http://localhost:5001/jobs', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

@@ -23,12 +23,11 @@ function MyProfiles() {
 
     const checkCustomerProfile = async (userId) => {
         try {
-            const response = await fetch('http://localhost:5001/customers/check', {
-                method: 'POST',
+            const response = await fetch(`http://localhost:5001/customers?userId=${userId}`, {
+                method: 'GET',
                 headers: {
                     'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ userId })
+                }
             });
             const data = await response.json();
             console.log('Response from backend:', data);
@@ -46,12 +45,11 @@ function MyProfiles() {
 
     const checkTradesmanProfile = async (userId) => {
         try {
-            const response = await fetch('http://localhost:5001/tradies/check', {
-                method: 'POST',
+            const response = await fetch(`http://localhost:5001/tradies?userId=${userId}`, {
+                method: 'GET',
                 headers: {
                     'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ userId })
+                }
             });
             const data = await response.json();
             console.log('Response from backend:', data);

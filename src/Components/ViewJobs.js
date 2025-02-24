@@ -17,7 +17,7 @@ function ViewJobs() {
     useEffect(() => {
         const fetchJobs = async () => {
             try {
-                const response = await fetch('http://localhost:3000/jobs/get');
+                const response = await fetch('http://localhost:5001/jobs');
                 const data = await response.json();
                 setJobs(data);
                 console.log('Jobs:', data);

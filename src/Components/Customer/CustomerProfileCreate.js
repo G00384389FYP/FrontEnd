@@ -18,7 +18,7 @@ function CustomerProfileCreate() {
             return;
         }        
 
-        fetch('http://localhost:5001/customers/add', {
+        fetch('http://localhost:5001/customers', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
