@@ -11,6 +11,7 @@ function JobDetails() {
     const { jobId } = useParams();
     const [job, setJob] = useState(null);
     const { userId } = useContext(UserContext);
+    const tradesmanId = userId;
 
     useEffect(() => {
         const fetchJobDetails = async () => {
@@ -25,6 +26,30 @@ function JobDetails() {
 
         fetchJobDetails();
     }, [jobId]);
+
+    const handleApply = async () => {
+        if (window.confirm('Are you sure you want to apply for this job?')) {
+            try {
+                const response = await fetch(`http://localhost:5001/jobs/${jobId}/applications`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ tradesmanId }),
+                    
+                });
+                console.log('tradesmanId:', tradesmanId)
+                if (response.ok) {
+                    alert('Application submitted successfully!');
+                } else {
+                    alert('Failed to submit application.');
+                }
+            } catch (error) {
+                console.error('Error submitting application:', error);
+                alert('An error occurred while submitting your application.');
+            }
+        }
+    };
 
     if (!job) {
         return <div>Loading...</div>;
@@ -67,7 +92,7 @@ function JobDetails() {
                     </Card>
                 </div>
                 <div className="apply-button">
-                    <button>Apply</button>
+                    <button onClick={handleApply}>Apply</button>
                 </div>
             </div>
             <div className="additional-info">
