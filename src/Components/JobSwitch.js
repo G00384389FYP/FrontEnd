@@ -2,10 +2,12 @@ import * as React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
+import { UserContext } from '../UserContext';
 
 export default function JobSwitch() {
   const navigate = useNavigate();
   const location = useLocation();
+  const { userId } = React.useContext(UserContext);
   const [alignment, setAlignment] = React.useState(location.pathname.includes('job-posting') ? 'post' : 'view');
 
   const handleChange = (event, newAlignment) => {
@@ -15,6 +17,8 @@ export default function JobSwitch() {
         navigate('/jobs');
       } else if (newAlignment === 'post') {
         navigate('/job-posting');
+      } else if (newAlignment === 'viewmyjobs') {
+        navigate(`/jobs/user/${userId}`); 
       }
     }
   };
@@ -48,6 +52,17 @@ export default function JobSwitch() {
         }}
       >
         Post a Job
+      </ToggleButton>
+      <ToggleButton 
+        value="viewmyjobs" 
+        sx={{ 
+          backgroundColor: alignment === 'viewmyjobs' ? 'lightblue' : 'inherit',
+          '&.Mui-selected': {
+            backgroundColor: 'lightblue',
+          }
+        }}
+      >
+        My Jobs
       </ToggleButton>
     </ToggleButtonGroup>
   );
