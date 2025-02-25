@@ -6,7 +6,7 @@ import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import CardActionArea from '@mui/material/CardActionArea';
 import { UserContext } from '../UserContext';
-import './ViewJobs.css';
+import './Jobs.css';
 import JobSwitch from './JobSwitch';
 
 function ViewJobs() {
@@ -20,7 +20,7 @@ function ViewJobs() {
                 const response = await fetch('http://localhost:5001/jobs');
                 const data = await response.json();
                 setJobs(data);
-                console.log('Jobs:', data);
+                // console.log('Jobs:', data);
             } catch (error) {
                 console.error('Error fetching jobs:', error);
             }
@@ -34,7 +34,7 @@ function ViewJobs() {
             console.error('User ID is not available');
             return;
         }    
-        navigate(`/applyJob/${jobId}`, { state: { userId } });
+        navigate(`/jobs/${jobId}`, { state: { userId } });
     };
 
     const displayedJobs = jobs;

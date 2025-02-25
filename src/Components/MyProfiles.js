@@ -30,7 +30,7 @@ function MyProfiles() {
                 }
             });
             const data = await response.json();
-            console.log('Response from backend:', data);
+            // console.log('Response from backend:', data);
             setCxExists(data.exists);
             if (data.exists) {
                 setCustomerProfile(data.customerProfile);
@@ -52,7 +52,7 @@ function MyProfiles() {
                 }
             });
             const data = await response.json();
-            console.log('Response from backend:', data);
+            // console.log('Response from backend:', data);
             setTxExists(data.exists);
             if (data.exists) {
                 setTradesmanProfile(data.tradesmanProfile);

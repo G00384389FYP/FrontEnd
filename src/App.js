@@ -7,13 +7,13 @@ import { UserProvider } from './UserContext';
 import LoginPage from "./LoginPage";
 import UserProfileForm from './Components/UserProfileForm';
 import MyProfiles from './Components/MyProfiles';
-// import MyProfiles from './Components/MyProfiles';
 import CustomerProfileCreate from './Components/Customer/CustomerProfileCreate';
 import Home from './Components/Home';
 import JobPosting from './Components/JobPosting';
 import Navbar from './Components/Navbar';
 import TradesmanProfileCreate from './Components/TradesmanProfileCreate';
 import ViewJobs from './Components/ViewJobs';
+import JobDetails from './Components/JobDetails'; 
 
 // Initialize MSAL instance
 const msalInstance = new PublicClientApplication(msalConfig);
@@ -44,7 +44,8 @@ function AuthContent() {
                     <Route path="/customerProfileCreate" element={<CustomerProfileCreate />} />
                     <Route path="/job-posting" element={<JobPosting />} />
                     <Route path="/tradesmanProfileCreate" element={<TradesmanProfileCreate />} />
-                    <Route path="/viewJobs" element={<ViewJobs />} />
+                    <Route path="/jobs" element={<ViewJobs />} />
+                    <Route path="/jobs/:jobId" element={<JobDetails />} />
                 </Routes>
             ) : (
                 <Routes>

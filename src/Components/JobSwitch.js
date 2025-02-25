@@ -12,7 +12,7 @@ export default function JobSwitch() {
     if (newAlignment !== null) {
       setAlignment(newAlignment);
       if (newAlignment === 'view') {
-        navigate('/viewJobs');
+        navigate('/jobs');
       } else if (newAlignment === 'post') {
         navigate('/job-posting');
       }
