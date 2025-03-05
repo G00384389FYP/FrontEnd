@@ -10,9 +10,9 @@ import './Jobs.css';
 function JobDetails() {
     const { jobId } = useParams();
     const [job, setJob] = useState(null);
-    const { userId } = useContext(UserContext);
+    const { userId } = useContext(UserContext); 
     const tradesmanId = userId;
-    const customerId = job.userId; // passing the customer id to the backend to save the extra cosmos query
+    const customerId = job ? job.userId : null; // make srue job isnt null before accessing userId as causes the issue w job applications
 
     useEffect(() => {
         const fetchJobDetails = async () => {
@@ -20,9 +20,6 @@ function JobDetails() {
                 const response = await fetch(`http://localhost:5001/jobs/${jobId}`);
                 const data = await response.json();
                 setJob(data);
-                // console.log('job:', data);
-                // console.log('cx id:', job.userId);
-                // console.log('customer:', customerId);
             } catch (error) {
                 console.error('Error fetching job details:', error);
             }
@@ -40,9 +37,8 @@ function JobDetails() {
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({ tradesmanId, customerId }),
-                    
                 });
-                console.log('tradesmanId:', tradesmanId)
+                console.log('tradesmanId:', tradesmanId);
                 if (response.ok) {
                     alert('Application submitted successfully!');
                 } else {

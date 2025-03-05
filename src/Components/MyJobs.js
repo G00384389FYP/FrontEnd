@@ -54,13 +54,14 @@ function MyJobs() {
         navigate(`/jobs/${jobId}`, { state: { userId } });
     };
 
-    const handleAcceptApplication = async (applicationId) => {
+    const handleAcceptApplication = async (jobId, applicationId) => {
         try {
-            const response = await fetch(`http://localhost:5001/applications/${applicationId}/accept`, {
-                method: 'POST',
+            const response = await fetch(`http://localhost:5001/jobs/${jobId}/applications/${applicationId}`, {
+                method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
                 },
+                body: JSON.stringify({ status: 'approved' }),
             });
             if (response.ok) {
                 alert('Application accepted successfully!');
@@ -74,13 +75,14 @@ function MyJobs() {
         }
     };
 
-    const handleDeclineApplication = async (applicationId) => {
+    const handleDeclineApplication = async (jobId, applicationId) => {
         try {
-            const response = await fetch(`http://localhost:5001/applications/${applicationId}/decline`, {
-                method: 'POST',
+            const response = await fetch(`http://localhost:5001/jobs/${jobId}/applications/${applicationId}`, {
+                method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
                 },
+                body: JSON.stringify({ status: 'declined' }),
             });
             if (response.ok) {
                 alert('Application declined successfully!');
@@ -93,6 +95,9 @@ function MyJobs() {
             alert('An error occurred while declining the application.');
         }
     };
+
+    const pendingApplications = applications.filter(app => app.status === 'pending');
+    const otherApplications = applications.filter(app => app.status !== 'pending');
 
     return (
         <div>
@@ -132,10 +137,10 @@ function MyJobs() {
                     ))}
                 </div>
                 <div className="header">
-                    <h1>Job Applications</h1>
+                    <h1>Pending Job Applications</h1>
                 </div>
                 <div className="job-applications-container">
-                    {applications.map((application) => (
+                    {pendingApplications.map((application) => (
                         <Card key={application.id} className="job-card">
                             <CardContent className="job-card-content">
                                 <Typography gutterBottom variant="h5" component="div" className="job-card-title">
@@ -148,13 +153,36 @@ function MyJobs() {
                                     Applied on: {new Date(application.createdAt).toLocaleDateString()}
                                 </Typography>
                                 <div className="application-buttons">
-                                    <Button variant="contained" color="primary" onClick={() => handleAcceptApplication(application.id)}>
+                                    <Button variant="contained" color="primary" onClick={() => handleAcceptApplication(application.jobId, application.id)}>
                                         Accept
                                     </Button>
-                                    <Button variant="contained" color="secondary" onClick={() => handleDeclineApplication(application.id)}>
+                                    <Button variant="contained" color="secondary" onClick={() => handleDeclineApplication(application.jobId, application.id)}>
                                         Decline
                                     </Button>
                                 </div>
+                            </CardContent>
+                        </Card>
+                    ))}
+                </div>
+                <div className="header">
+                    <h1>Other Job Applications</h1>
+                </div>
+                <div className="job-applications-container">
+                    {otherApplications.map((application) => (
+                        <Card key={application.id} className="job-card">
+                            <CardContent className="job-card-content">
+                                <Typography gutterBottom variant="h5" component="div" className="job-card-title">
+                                    {application.jobTitle}
+                                </Typography>
+                                <Typography variant="body2" className="job-card-description">
+                                    Applicant: {application.tradesman.name}
+                                </Typography>
+                                <Typography variant="body2" className="job-card-description">
+                                    Status: {application.status}
+                                </Typography>
+                                <Typography variant="body2" className="job-card-details">
+                                    Applied on: {new Date(application.createdAt).toLocaleDateString()}
+                                </Typography>
                             </CardContent>
                         </Card>
                     ))}
