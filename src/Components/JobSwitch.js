@@ -2,6 +2,7 @@ import * as React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
+import { CardActionArea } from '@mui/material/CardActionArea';
 import { UserContext } from '../UserContext';
 
 export default function JobSwitch() {
@@ -18,7 +19,7 @@ export default function JobSwitch() {
       } else if (newAlignment === 'post') {
         navigate('/job-posting');
       } else if (newAlignment === 'viewmyjobs') {
-        navigate(`/jobs/user/${userId}`); 
+        navigate('/my-jobs'); 
       }
     }
   };

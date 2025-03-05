@@ -47,7 +47,7 @@ function AuthContent() {
                     <Route path="/tradesmanProfileCreate" element={<TradesmanProfileCreate />} />
                     <Route path="/jobs" element={<ViewJobs />} />
                     <Route path="/jobs/:jobId" element={<JobDetails />} />
-                    <Route path="/jobs/user/:userId" element={<MyJobs />} />
+                    <Route path="/my-jobs" element={<MyJobs />} />
                 </Routes>
             ) : (
                 <Routes>

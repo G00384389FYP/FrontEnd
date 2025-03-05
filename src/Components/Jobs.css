@@ -23,7 +23,6 @@
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     width: 100%;
-
 }
 
 .header {
@@ -86,7 +85,6 @@
     font-size: 0.875rem;
     color: #999;
 }
-
 
 /* Jobs Details */
 .job-details-container {
@@ -156,4 +154,11 @@
     background-color: #f9f9f9;
     padding: 20px;
     border-radius: 8px;
+}
+
+/* Job Applications */
+.job-applications-container {
+    width: 70%;
+    max-width: 1200px;
+    margin: 0 auto;
 }

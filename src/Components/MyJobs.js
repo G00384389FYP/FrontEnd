@@ -5,12 +5,14 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import CardActionArea from '@mui/material/CardActionArea';
+import Button from '@mui/material/Button';
 import { UserContext } from '../UserContext';
 import './Jobs.css';
 import JobSwitch from './JobSwitch';
 
 function MyJobs() {
     const [jobs, setJobs] = useState([]);
+    const [applications, setApplications] = useState([]);
     const navigate = useNavigate();
     const { userId } = useContext(UserContext);
 
@@ -26,8 +28,21 @@ function MyJobs() {
             }
         };
 
+        const fetchApplications = async () => {
+            try {
+                const response = await fetch(`http://localhost:5001/customers/job-applications?userId=${userId}`);
+                const data = await response.json();
+                setApplications(Array.isArray(data) ? data : []);
+                console.log('Applications:', data);
+            } catch (error) {
+                console.error('Error fetching applications:', error);
+                setApplications([]);
+            }
+        };
+
         if (userId) {
             fetchJobs();
+            fetchApplications();
         }
     }, [userId]);
 
@@ -37,6 +52,46 @@ function MyJobs() {
             return;
         }    
         navigate(`/jobs/${jobId}`, { state: { userId } });
+    };
+
+    const handleAcceptApplication = async (applicationId) => {
+        try {
+            const response = await fetch(`http://localhost:5001/applications/${applicationId}/accept`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+            if (response.ok) {
+                alert('Application accepted successfully!');
+                setApplications(applications.filter(app => app.id !== applicationId));
+            } else {
+                alert('Failed to accept application.');
+            }
+        } catch (error) {
+            console.error('Error accepting application:', error);
+            alert('An error occurred while accepting the application.');
+        }
+    };
+
+    const handleDeclineApplication = async (applicationId) => {
+        try {
+            const response = await fetch(`http://localhost:5001/applications/${applicationId}/decline`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+            if (response.ok) {
+                alert('Application declined successfully!');
+                setApplications(applications.filter(app => app.id !== applicationId));
+            } else {
+                alert('Failed to decline application.');
+            }
+        } catch (error) {
+            console.error('Error declining application:', error);
+            alert('An error occurred while declining the application.');
+        }
     };
 
     return (
@@ -73,6 +128,34 @@ function MyJobs() {
                                     </Typography>
                                 </CardContent>
                             </CardActionArea>
+                        </Card>
+                    ))}
+                </div>
+                <div className="header">
+                    <h1>Job Applications</h1>
+                </div>
+                <div className="job-applications-container">
+                    {applications.map((application) => (
+                        <Card key={application.id} className="job-card">
+                            <CardContent className="job-card-content">
+                                <Typography gutterBottom variant="h5" component="div" className="job-card-title">
+                                    {application.jobTitle}
+                                </Typography>
+                                <Typography variant="body2" className="job-card-description">
+                                    Applicant: {application.tradesman.name}
+                                </Typography>
+                                <Typography variant="body2" className="job-card-details">
+                                    Applied on: {new Date(application.createdAt).toLocaleDateString()}
+                                </Typography>
+                                <div className="application-buttons">
+                                    <Button variant="contained" color="primary" onClick={() => handleAcceptApplication(application.id)}>
+                                        Accept
+                                    </Button>
+                                    <Button variant="contained" color="secondary" onClick={() => handleDeclineApplication(application.id)}>
+                                        Decline
+                                    </Button>
+                                </div>
+                            </CardContent>
                         </Card>
                     ))}
                 </div>
