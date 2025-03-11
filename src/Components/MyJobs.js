@@ -165,7 +165,7 @@ function MyJobs() {
                     ))}
                 </div>
                 <div className="header">
-                    <h1>Other Job Applications</h1>
+                    <h1>Processed Job Applications</h1>
                 </div>
                 <div className="job-applications-container">
                     {otherApplications.map((application) => (
