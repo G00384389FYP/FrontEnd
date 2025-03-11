@@ -2,12 +2,13 @@ import * as React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
-import { CardActionArea } from '@mui/material/CardActionArea';
+// import { CardActionArea } from '@mui/material/CardActionArea'; 
 import { UserContext } from '../UserContext';
 
 export default function JobSwitch() {
   const navigate = useNavigate();
   const location = useLocation();
+  // eslint-disable-next-line
   const { userId } = React.useContext(UserContext);
   const [alignment, setAlignment] = React.useState(location.pathname.includes('job-posting') ? 'post' : 'view');
 

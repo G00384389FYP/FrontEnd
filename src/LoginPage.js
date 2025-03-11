@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useContext } from 'react';
 import { useMsal } from "@azure/msal-react";
 import { useNavigate } from 'react-router-dom';
 import './App.css'; 
@@ -19,41 +19,7 @@ function LoginPage() {
         }
     };
 
-    // const checkUserEmail = async (email) => {
-    //     try {
-    //         // const response = await fetch('http://localhost:5001/users/user/check', {
-    //         // const response = await fetch('http://localhost:5001/users/check', {
-    //         const response = await fetch('http://localhost:5001/users/check', {
-    //             method: 'POST',
-    //             headers: {
-    //                 'Content-Type': 'application/json'
-    //             },
-    //             body: JSON.stringify({ email })
-    //         });
-
-    //         if (!response.ok) {
-    //             if (response.status === 404) {
-    //                 console.log('Email not found. Redirecting to create user.');
-    //                 navigate('userProfileForm');
-    //                 return;
-    //             } else {
-    //                 throw new Error(`HTTP error! status: ${response.status}`);
-    //             }
-    //         }
-
-    //         const data = await response.json();
-    //         let userID = data.userId;
-
-    //         // Set the userId in UserContext
-    //         setUserId(userID);
-    //         console.log('setting UserID:', userID);
-
-    //         // Email exists, log the user in and store userID
-    //         navigate('myProfiles', { state: { userID } });
-    //     } catch (error) {
-    //         console.error('Error during email check:', error);
-    //     }
-    // };
+    
     const checkUserEmail = async (email) => {
         try {
             const response = await fetch(`http://localhost:5001/users?email=${email}`, {

@@ -2,7 +2,7 @@ import React from 'react';
 import { PublicClientApplication } from "@azure/msal-browser";
 import { MsalProvider, useIsAuthenticated } from "@azure/msal-react";
 import { msalConfig } from "./authConfig";
-import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { UserProvider } from './UserContext';
 import LoginPage from "./LoginPage";
 import UserProfileForm from './Components/UserProfileForm';

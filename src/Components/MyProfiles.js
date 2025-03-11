@@ -8,6 +8,7 @@ function MyProfiles() {
 
     const [customerProfile, setCustomerProfile] = useState(null);
     const [cxExists, setCxExists] = useState(null);
+    // eslint-disable-next-line
     const [customerJoinDate, setcustomerJoinDate] = useState(null);
 
     const [tradesmanProfile, setTradesmanProfile] = useState(null);
