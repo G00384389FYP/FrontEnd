@@ -3,6 +3,7 @@ import { useMsal } from "@azure/msal-react";
 import { useNavigate } from 'react-router-dom';
 import './App.css'; 
 import { UserContext } from './UserContext';
+import API from '../api';
 
 function LoginPage() {
     const { instance } = useMsal();
@@ -22,7 +23,10 @@ function LoginPage() {
     
     const checkUserEmail = async (email) => {
         try {
-            const response = await fetch(`http://localhost:5001/users?email=${email}`, {
+            // const response = await fetch(`http://localhost:5001/users?email=${email}`, {
+            const response = await fetch(`${API}/users?email=${email}`, {
+                
+                
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json'
