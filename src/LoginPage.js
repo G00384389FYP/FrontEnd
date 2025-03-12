@@ -14,25 +14,21 @@ function LoginPage() {
         try {
             const response = await instance.loginPopup();
             const email = response.account.username;
-            await checkUserEmail(email); // wait for the POST request to complete before navigating
+            await checkUserEmail(email); 
         } catch (error) {
             console.error('Error during login:', error);
         }
     };
 
-    
     const checkUserEmail = async (email) => {
         try {
-            // const response = await fetch(`http://localhost:5001/users?email=${email}`, {
             const response = await fetch(`${API}/users?email=${email}`, {
-                
-                
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json'
                 }
             });
-    
+
             if (!response.ok) {
                 if (response.status === 404) {
                     console.log('Email not found. Redirecting to create user.');
@@ -42,14 +38,14 @@ function LoginPage() {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
             }
-    
+
             const data = await response.json();
             let userID = data.userId;
-    
+
             // Set the userId in UserContext
             setUserId(userID);
             console.log('setting UserID:', userID);
-    
+
             // Email exists, log the user in and store userID
             navigate('myProfiles', { state: { userID } });
         } catch (error) {
