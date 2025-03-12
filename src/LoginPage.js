@@ -13,7 +13,7 @@ function LoginPage() {
     const handleLogin = async () => {
         try {
             const response = await instance.loginPopup();
-            if (response && response.account) {
+            if (response && response.account) { 
                 const email = response.account.username;
                 await checkUserEmail(email);
             } else {
