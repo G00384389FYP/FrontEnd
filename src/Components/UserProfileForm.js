@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { API } from '../Api';
 
 function UserProfileForm() {
     const [userDetails, setUserDetails] = useState({
@@ -47,7 +48,7 @@ function UserProfileForm() {
 
         console.log('User Details before submit:', userDetails);
         try {
-            const response = await fetch('http://localhost:5001/users', {
+            const response = await fetch(`${API}/users`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

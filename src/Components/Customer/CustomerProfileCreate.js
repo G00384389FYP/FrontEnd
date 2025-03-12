@@ -1,5 +1,7 @@
 import React, { useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import API from './Api';
+
 
 function CustomerProfileCreate() {
     const navigate = useNavigate();
@@ -18,7 +20,7 @@ function CustomerProfileCreate() {
             return;
         }        
 
-        fetch('http://localhost:5001/customers', {
+        fetch(`${API}/customers`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

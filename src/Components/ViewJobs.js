@@ -8,6 +8,8 @@ import CardActionArea from '@mui/material/CardActionArea';
 import { UserContext } from '../UserContext';
 import './Jobs.css';
 import JobSwitch from './JobSwitch';
+import { API } from '../Api';
+
 
 function ViewJobs() {
     const [jobs, setJobs] = useState([]);
@@ -17,7 +19,7 @@ function ViewJobs() {
     useEffect(() => {
         const fetchJobs = async () => {
             try {
-                const response = await fetch('http://localhost:5001/jobs');
+                const response = await fetch(`${API}/jobs`);
                 const data = await response.json();
                 setJobs(data);
                 // console.log('Jobs:', data);

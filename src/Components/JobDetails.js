@@ -6,6 +6,7 @@ import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import { UserContext } from '../UserContext';
 import './Jobs.css';
+import { API } from '../Api';
 
 function JobDetails() {
     const { jobId } = useParams();
@@ -17,7 +18,7 @@ function JobDetails() {
     useEffect(() => {
         const fetchJobDetails = async () => {
             try {
-                const response = await fetch(`http://localhost:5001/jobs/${jobId}`);
+                const response = await fetch(`${API}/jobs/${jobId}`);
                 const data = await response.json();
                 setJob(data);
             } catch (error) {
@@ -31,7 +32,7 @@ function JobDetails() {
     const handleApply = async () => {
         if (window.confirm('Are you sure you want to apply for this job?')) {
             try {
-                const response = await fetch(`http://localhost:5001/jobs/${jobId}/applications`, {
+                const response = await fetch(`${API}/jobs/${jobId}/applications`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { UserContext } from '../UserContext';
+import API from '../Api';
 
 function MyProfiles() {
     const navigate = useNavigate();
@@ -24,7 +25,7 @@ function MyProfiles() {
 
     const checkCustomerProfile = async (userId) => {
         try {
-            const response = await fetch(`http://localhost:5001/customers?userId=${userId}`, {
+            const response = await fetch(`${API}/customers?userId=${userId}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json'

@@ -9,6 +9,7 @@ import Button from '@mui/material/Button';
 import { UserContext } from '../UserContext';
 import './Jobs.css';
 import JobSwitch from './JobSwitch';
+import { API } from '../Api';
 
 function MyJobs() {
     const [jobs, setJobs] = useState([]);
@@ -20,7 +21,7 @@ function MyJobs() {
         const fetchJobs = async () => {
             try {
                 console.log('userId:', userId);
-                const response = await fetch(`http://localhost:5001/jobs/user/${userId}`);
+                const response = await fetch(`${API}/jobs/user/${userId}`);
                 const data = await response.json();
                 setJobs(data);
             } catch (error) {
@@ -30,7 +31,7 @@ function MyJobs() {
 
         const fetchApplications = async () => {
             try {
-                const response = await fetch(`http://localhost:5001/customers/job-applications?userId=${userId}`);
+                const response = await fetch(`${API}/customers/job-applications?userId=${userId}`);
                 const data = await response.json();
                 setApplications(Array.isArray(data) ? data : []);
                 console.log('Applications:', data);
@@ -56,7 +57,7 @@ function MyJobs() {
 
     const handleAcceptApplication = async (jobId, applicationId) => {
         try {
-            const response = await fetch(`http://localhost:5001/jobs/${jobId}/applications/${applicationId}`, {
+            const response = await fetch(`${API}/jobs/${jobId}/applications/${applicationId}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -77,7 +78,7 @@ function MyJobs() {
 
     const handleDeclineApplication = async (jobId, applicationId) => {
         try {
-            const response = await fetch(`http://localhost:5001/jobs/${jobId}/applications/${applicationId}`, {
+            const response = await fetch(`${API}/jobs/${jobId}/applications/${applicationId}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',

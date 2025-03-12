@@ -2,6 +2,7 @@ import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { UserContext } from '../UserContext';
 import JobSwitch from './JobSwitch';
+import { API } from '../Api';
 
 function JobPosting() {
     const { userId } = useContext(UserContext);
@@ -32,7 +33,7 @@ function JobPosting() {
         const requestData = { ...jobDetails, UserId: userId };
 
         try {
-            const response = await fetch('http://localhost:5001/jobs', {
+            const response = await fetch(`${API}/jobs`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
