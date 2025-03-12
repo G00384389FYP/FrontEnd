@@ -47,7 +47,7 @@ function MyProfiles() {
 
     const checkTradesmanProfile = async (userId) => {
         try {
-            const response = await fetch(`http://localhost:5001/tradies?userId=${userId}`, {
+            const response = await fetch(`${API}/tradies?userId=${userId}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json'

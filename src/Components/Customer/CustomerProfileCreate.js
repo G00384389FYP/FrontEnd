@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import API from './Api';
+import API from '../../Api';
 
 
 function CustomerProfileCreate() {
