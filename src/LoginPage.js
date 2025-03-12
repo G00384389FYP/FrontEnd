@@ -13,8 +13,12 @@ function LoginPage() {
     const handleLogin = async () => {
         try {
             const response = await instance.loginPopup();
-            const email = response.account.username;
-            await checkUserEmail(email); 
+            if (response && response.account) {
+                const email = response.account.username;
+                await checkUserEmail(email);
+            } else {
+                console.error('Login response is missing account information:', response);
+            }
         } catch (error) {
             console.error('Error during login:', error);
         }
