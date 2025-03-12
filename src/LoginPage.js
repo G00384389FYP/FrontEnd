@@ -3,7 +3,7 @@ import { useMsal } from "@azure/msal-react";
 import { useNavigate } from 'react-router-dom';
 import './App.css'; 
 import { UserContext } from './UserContext';
-import API from '../api';
+import API from './Api';
 
 function LoginPage() {
     const { instance } = useMsal();
