@@ -26,7 +26,7 @@ function LoginPage() {
 
     const checkUserEmail = async (email) => {
         try {
-            console.log('API:', `${API}/users?email=${email}`);
+            console.log('API:', `/users?email=${email}`);
             const response = await fetch(`${API}/users?email=${email}`, {
                 method: 'GET',
                 headers: {
