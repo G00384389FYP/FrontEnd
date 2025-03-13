@@ -34,6 +34,9 @@ function App() {
 
 function AuthContent() {
     const isAuthenticated = useIsAuthenticated();
+    console.log('API ENV:', process.env.REACT_APP_API_URL);
+    console.log('REDIRECT ENV:', process.env.REACT_APP_REDIRECT_URI);
+
 
     return (
         <>
