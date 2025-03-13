@@ -11,6 +11,7 @@ function LoginPage() {
     const { setUserId } = useContext(UserContext);
 
     const handleLogin = async () => {
+        console.log('API: ', API);
         try {
             const response = await instance.loginPopup();
             if (response && response.account) { 
@@ -63,6 +64,7 @@ function LoginPage() {
             <header className="login-header">
                 <h1>Nixers.ie</h1>
             </header>
+            
             <div className="login-box">
                 <h2>Sign in with your email</h2>
                 <button onClick={handleLogin}>Login</button>
