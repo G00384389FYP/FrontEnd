@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { API } from '../Api';
+import  API  from '../Api';
 
 function UserProfileForm() {
     const [userDetails, setUserDetails] = useState({

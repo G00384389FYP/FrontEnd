@@ -2,7 +2,7 @@ import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { UserContext } from '../UserContext';
 import JobSwitch from './JobSwitch';
-import { API } from '../Api';
+import  API  from '../Api';
 
 function JobPosting() {
     const { userId } = useContext(UserContext);

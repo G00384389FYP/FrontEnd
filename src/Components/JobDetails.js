@@ -6,7 +6,7 @@ import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import { UserContext } from '../UserContext';
 import './Jobs.css';
-import { API } from '../Api';
+import  API  from '../Api';
 
 function JobDetails() {
     const { jobId } = useParams();

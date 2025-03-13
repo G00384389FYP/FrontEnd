@@ -9,7 +9,7 @@ import Button from '@mui/material/Button';
 import { UserContext } from '../UserContext';
 import './Jobs.css';
 import JobSwitch from './JobSwitch';
-import { API } from '../Api';
+import  API  from '../Api';
 
 function MyJobs() {
     const [jobs, setJobs] = useState([]);
