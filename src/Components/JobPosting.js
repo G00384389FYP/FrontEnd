@@ -11,7 +11,8 @@ function JobPosting() {
         JobTitle: '',
         JobDescription: '',
         TradesRequired: 'Plumber',
-        JobLocation: 'Dublin'
+        JobLocation: 'Dublin',
+        JobImage: ''
     });
     const navigate = useNavigate();
 
@@ -62,7 +63,7 @@ function JobPosting() {
                 <form className="job-posting-form" onSubmit={handleSubmit}>
                     <h2>Create Job Posting</h2>
                     <input type="text" name="JobTitle" value={jobDetails.JobTitle} onChange={handleChange} placeholder="Job Title" className="form-input" />
-                    <input type="text" name="JobImage" value={jobDetails.JobTitle} onChange={handleChange} placeholder="https://..." className="form-input" />                    
+                    <input type="text" name="JobImage" value={jobDetails.JobImage} onChange={handleChange} placeholder="https://..." className="form-input" />                    
                     <textarea name="JobDescription" value={jobDetails.JobDescription} onChange={handleChange} placeholder="Job Description" className="form-textarea"></textarea>
                     <select name="TradesRequired" value={jobDetails.TradesRequired} onChange={handleChange} className="form-select">
                         <option value="Plumber">Plumber</option>
