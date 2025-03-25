@@ -35,6 +35,8 @@ function JobPosting() {
         console.log("Request Body:", JSON.stringify(requestData, null, 2));
 
         try {
+            console.log('Sending POST request with data:', requestData);
+            console.log('job:', jobDetails);
             const response = await fetch(`${API}/jobs`, {
                 method: 'POST',
                 headers: {
