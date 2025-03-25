@@ -32,6 +32,7 @@ function JobPosting() {
         }
 
         const requestData = { ...jobDetails, UserId: userId };
+        console.log("Request Body:", JSON.stringify(requestData, null, 2));
 
         try {
             const response = await fetch(`${API}/jobs`, {

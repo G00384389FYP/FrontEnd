@@ -20,7 +20,7 @@ function MyJobs() {
     useEffect(() => {
         const fetchJobs = async () => {
             try {
-                console.log('userId:', userId);
+                // console.log('userId:', userId);
                 const response = await fetch(`${API}/jobs/user/${userId}`);
                 const data = await response.json();
                 setJobs(data);

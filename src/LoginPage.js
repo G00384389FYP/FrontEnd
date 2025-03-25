@@ -11,7 +11,7 @@ function LoginPage() {
     const { setUserId } = useContext(UserContext);
 
     const handleLogin = async () => {
-        console.log('API: ', API);
+        // console.log('API: ', API);
         try {
             const response = await instance.loginPopup();
             if (response && response.account) { 
@@ -27,7 +27,7 @@ function LoginPage() {
 
     const checkUserEmail = async (email) => {
         try {
-            console.log('API:', `${API}/users?email=${email}`);
+            // console.log('API:', `${API}/users?email=${email}`);
             const response = await fetch(`${API}/users?email=${email}`, {
                 method: 'GET',
                 headers: {
