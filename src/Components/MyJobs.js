@@ -109,6 +109,26 @@ function MyJobs() {
         }
     };
 
+    const handleCompleteJob = async (jobId) => {
+        try {
+            const response = await fetch(`${API}/jobs/${jobId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+            if (response.ok) {
+                alert('Job marked as complete!');
+                setAssignedJobs(assignedJobs.filter(job => job.id !== jobId));
+            } else {
+                alert('Failed to mark job as complete.');
+            }
+        } catch (error) {
+            console.error('Error marking job as complete:', error);
+            alert('An error occurred while marking the job as complete.');
+        }
+    };
+
     const pendingApplications = applications.filter(app => app.status === 'pending');
     const otherApplications = applications.filter(app => app.status !== 'pending');
 
@@ -205,13 +225,14 @@ function MyJobs() {
                 <h1>My Tradesman Jobs</h1>
                 <div className="job-applications-container">
                     {assignedJobs.map((job) => (
-                        <Card key={job.id} className="job-card">
-                            <CardActionArea onClick={() => handleApplyJob(job.id)}>
+                        <Card key={job.id} className="job-card job-card-wide">
+                            <div className="job-card-flex">
                                 <CardMedia
                                     component="img"
                                     height="140"
                                     image={job.jobImage}
                                     alt="job image"
+                                    className="job-card-media"
                                 />
                                 <CardContent className="job-card-content">
                                     <Typography gutterBottom variant="h5" component="div" className="job-card-title">
@@ -226,8 +247,11 @@ function MyJobs() {
                                     <Typography variant="body2" className="job-card-details">
                                         Trade Required: {job.tradesRequired}
                                     </Typography>
+                                    <Button variant="contained" color="primary" onClick={() => handleCompleteJob(job.id)}>
+                                        Mark as Complete
+                                    </Button>
                                 </CardContent>
-                            </CardActionArea>
+                            </div>
                         </Card>
                     ))}
                 </div>

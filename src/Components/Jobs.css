@@ -56,6 +56,9 @@
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     transition: transform 0.2s;
+    display: flex;
+    flex-direction: column;
+    margin: 10px;
 }
 
 .job-card:hover {
@@ -69,21 +72,29 @@
 
 .job-card-content {
     padding: 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 10px;
 }
 
 .job-card-title {
     font-size: 1.5rem;
     color: #333;
+    font-size: 1.5em;
+    font-weight: bold;
 }
 
 .job-card-description {
     font-size: 1rem;
     color: #666;
+    margin-top: 5px;
 }
 
 .job-card-details {
     font-size: 0.875rem;
     color: #999;
+    margin-top: 5px;
 }
 
 /* Jobs Details */
@@ -161,4 +172,23 @@
     width: 70%;
     max-width: 1200px;
     margin: 0 auto;
+}
+
+.job-card-flex {
+    display: flex;
+    flex-direction: row;
+}
+
+.job-card-media {
+    width: 200px;
+}
+
+.application-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+.job-card-wide {
+    width: 70%;
 }
