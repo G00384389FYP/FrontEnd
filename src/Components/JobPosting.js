@@ -7,7 +7,7 @@ import  API  from '../Api';
 function JobPosting() {
     const { userId } = useContext(UserContext);
     const [jobDetails, setJobDetails] = useState({
-        UserId: userId,
+        UserId: String(userId),
         JobTitle: '',
         JobDescription: '',
         TradesRequired: 'Plumber',
@@ -31,7 +31,7 @@ function JobPosting() {
             return;
         }
 
-        const requestData = { ...jobDetails, UserId: userId };
+        const requestData = { ...jobDetails, UserId: String(userId) };
         console.log("Request Body:", JSON.stringify(requestData, null, 2));
 
         try {
