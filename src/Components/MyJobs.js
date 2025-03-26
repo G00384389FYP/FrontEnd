@@ -9,10 +9,11 @@ import Button from '@mui/material/Button';
 import { UserContext } from '../UserContext';
 import './Jobs.css';
 import JobSwitch from './JobSwitch';
-import  API  from '../Api';
+import API from '../Api';
 
 function MyJobs() {
     const [jobs, setJobs] = useState([]);
+    const [assignedJobs, setAssignedJobs] = useState([]);
     const [applications, setApplications] = useState([]);
     const navigate = useNavigate();
     const { userId } = useContext(UserContext);
@@ -20,12 +21,22 @@ function MyJobs() {
     useEffect(() => {
         const fetchJobs = async () => {
             try {
-                // console.log('userId:', userId);
                 const response = await fetch(`${API}/jobs/user/${userId}`);
                 const data = await response.json();
                 setJobs(data);
             } catch (error) {
                 console.error('Error fetching jobs:', error);
+            }
+        };
+
+        const fetchAssignedJobs = async () => {
+            try {
+                const response = await fetch(`${API}/jobs/tradesman/${userId}`);
+                const data = await response.json();
+                setAssignedJobs(data);
+                console.log('Assigned Jobs:', data);
+            } catch (error) {
+                console.error('Error fetching assigned jobs:', error);
             }
         };
 
@@ -43,6 +54,7 @@ function MyJobs() {
 
         if (userId) {
             fetchJobs();
+            fetchAssignedJobs();
             fetchApplications();
         }
     }, [userId]);
@@ -51,7 +63,7 @@ function MyJobs() {
         if (!userId) {
             console.error('User ID is not available');
             return;
-        }    
+        }
         navigate(`/jobs/${jobId}`, { state: { userId } });
     };
 
@@ -102,7 +114,7 @@ function MyJobs() {
 
     return (
         <div>
-            <div className='job-switch' >
+            <div className='job-switch'>
                 <JobSwitch />
             </div>
             <div className="view-jobs-container">
@@ -185,6 +197,37 @@ function MyJobs() {
                                     Applied on: {new Date(application.createdAt).toLocaleDateString()}
                                 </Typography>
                             </CardContent>
+                        </Card>
+                    ))}
+                </div>
+            </div>
+            <div>
+                <h1>My Tradesman Jobs</h1>
+                <div className="job-applications-container">
+                    {assignedJobs.map((job) => (
+                        <Card key={job.id} className="job-card">
+                            <CardActionArea onClick={() => handleApplyJob(job.id)}>
+                                <CardMedia
+                                    component="img"
+                                    height="140"
+                                    image={job.jobImage}
+                                    alt="job image"
+                                />
+                                <CardContent className="job-card-content">
+                                    <Typography gutterBottom variant="h5" component="div" className="job-card-title">
+                                        {job.jobTitle}
+                                    </Typography>
+                                    <Typography variant="body2" className="job-card-description">
+                                        {job.jobDescription}
+                                    </Typography>
+                                    <Typography variant="body2" className="job-card-details">
+                                        Location: {job.jobLocation}
+                                    </Typography>
+                                    <Typography variant="body2" className="job-card-details">
+                                        Trade Required: {job.tradesRequired}
+                                    </Typography>
+                                </CardContent>
+                            </CardActionArea>
                         </Card>
                     ))}
                 </div>
