@@ -15,10 +15,16 @@ import TradesmanProfileCreate from './Components/TradesmanProfileCreate';
 import ViewJobs from './Components/ViewJobs';
 import JobDetails from './Components/JobDetails'; 
 import MyJobs from './Components/MyJobs';
-import InvoiceHome from './Components/Invoice/InvoiceHome';
+import InvoiceHome from './Components/Jobs/InvoiceHome';
+import { Elements } from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
+import Checkout from './Components/Jobs/Checkout';
+
 
 // Initialize MSAL instance
 const msalInstance = new PublicClientApplication(msalConfig);
+const stripePromise = loadStripe("pk_test_51R8eTuPPOChUOQVw3pOEZ6YolPkHExA8seggln8gYaBYwxggRmGpJO7T3Mp33rU6usTNnWqVCWadpD5fwZNcDKWE002WZ9SPKD");
+
 
 function App() {
     return (
@@ -49,7 +55,16 @@ function AuthContent() {
                     <Route path="/jobs/:jobId" element={<JobDetails />} />
                     <Route path="/my-jobs" element={<MyJobs />} />
                     <Route path="/invoices/:jobId" element={<InvoiceHome />} />
-                </Routes>
+                    <Route
+                        path="/invoices/pay"
+                        element={
+                            <Elements stripe={stripePromise}>
+                                <Checkout />
+                            </Elements>
+                        }
+                    />
+                </Routes>                   
+                
             ) : (
                 <Routes>
                     <Route path="/" element={<LoginPage />} />
