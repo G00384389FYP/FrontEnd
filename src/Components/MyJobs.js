@@ -165,14 +165,15 @@ function MyJobs() {
             const handleInvoice = async(jobId) => {
                 if (window.confirm('Are you sure you want to invoice for this job?')) 
                 try {
-                    console.log('Sending Invoice');
+                    console.log('Sending Invoice for jobId:', jobId);
+                    navigate(`/invoices/${jobId}`);
 
                 }
                 catch (error) {
                     console.error('Error fetching invoice:', error);
                 }
             };
-            
+
     const pendingApplications = applications.filter(app => app.status === 'pending');
     const otherApplications = applications.filter(app => app.status !== 'pending');
 
