@@ -7,7 +7,7 @@ const CheckoutForm = () => {
   const stripe = useStripe();
   const elements = useElements();
   const [message, setMessage] = useState("");
-  const [chargeAmount, setChargeAmount] = useState(1000); // Charge amount in cents (e.g., $10.00)
+  const [chargeAmount, setChargeAmount] = useState(1000); // Charge amount in cents (e.g., €10.00)
 
   const handleSubmit = async (e) => {
     e.preventDefault();

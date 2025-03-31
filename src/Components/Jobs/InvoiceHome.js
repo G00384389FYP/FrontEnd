@@ -11,10 +11,11 @@ function InvoiceHome() {
     const tradesmanId = userId;
     const customerId = job ? job.userId : null;
 
-    const [invoiceDetails, setInvoiceDetails] = useState({
-        price: '',
-        description: '',
-        total: ''
+    const [invoiceDetails, setInvoiceDetails] = useState({        
+        Notes: '', 
+        Amount: '', 
+        PaymentType: 'cash', 
+        DueDate: '' 
     });
 
     useEffect(() => {
@@ -39,9 +40,36 @@ function InvoiceHome() {
         }));
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log('Invoice Details:', invoiceDetails);
+
+        try {
+            console.log("Request Body:", JSON.stringify(invoiceDetails, null, 2));
+            const response = await fetch(`${API}/invoices/${jobId}`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    tradesmanId,
+                    customerId,
+                    jobId,
+                    ...invoiceDetails, 
+                }),
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                console.log("Invoice submitted successfully:", data);
+                alert("Invoice submitted successfully!");
+            } else {
+                console.error("Failed to submit invoice:", response.statusText);
+                alert("Failed to submit invoice. Please try again.");
+            }
+        } catch (error) {
+            console.error("Error submitting invoice:", error);
+            alert("An error occurred while submitting the invoice.");
+        }
     };
 
     return (
@@ -49,39 +77,63 @@ function InvoiceHome() {
             <h1 className="invoice-title">Draft Invoice</h1>
             <form className="invoice-form" onSubmit={handleSubmit}>
                 <div className="form-group">
-                    <label htmlFor="price">Price:</label>
+                    <label htmlFor="Notes">Notes:</label>
+                    <textarea
+                        id="Notes"
+                        name="Notes" 
+                        value={invoiceDetails.Notes}
+                        onChange={handleChange}
+                        className="form-textarea"
+                    />
+                </div>                
+                
+                <div className="form-group">
+                    <label>Payment Method:</label>
+                    <div className="form-radio-group">
+                        <label>
+                            <input
+                                type="radio"
+                                name="PaymentType" 
+                                value="cash"
+                                checked={invoiceDetails.PaymentType === "cash"}
+                                onChange={handleChange}
+                                className="form-radio"
+                            />
+                            Cash
+                        </label>
+                        <label>
+                            <input
+                                type="radio"
+                                name="PaymentType" 
+                                value="online"
+                                checked={invoiceDetails.PaymentType === "online"}
+                                onChange={handleChange}
+                                className="form-radio"
+                            />
+                            Online Payment
+                        </label>
+                    </div>
+                </div>
+                
+                <div className="form-group">
+                    <label htmlFor="Amount">Total:</label>
                     <input
                         type="number"
-                        id="price"
-                        name="price"
-                        value={invoiceDetails.price}
+                        id="Amount"
+                        name="Amount" 
+                        value={invoiceDetails.Amount}
                         onChange={handleChange}
                         className="form-input"
                     />
                 </div>
-                
-               
-                
+
                 <div className="form-group">
-                    <label htmlFor="description">Notes:</label>
-                    <textarea
-                        id="description"
-                        name="description"
-                        value={invoiceDetails.description}
-                        onChange={handleChange}
-                        className="form-textarea"
-                    />
-                </div>
-                
-                
-                
-                <div className="form-group">
-                    <label htmlFor="total">Total:</label>
+                    <label htmlFor="DueDate">Due Date:</label>
                     <input
-                        type="number"
-                        id="total"
-                        name="total"
-                        value={invoiceDetails.total}
+                        type="date"
+                        id="DueDate"
+                        name="DueDate" 
+                        value={invoiceDetails.DueDate}
                         onChange={handleChange}
                         className="form-input"
                     />
