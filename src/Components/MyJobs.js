@@ -15,6 +15,7 @@ function MyJobs() {
     const [jobs, setJobs] = useState([]);
     const [assignedJobs, setAssignedJobs] = useState([]);
     const [applications, setApplications] = useState([]);
+    const [finishedJobs, setFinishedJobs] = useState([]);
     const navigate = useNavigate();
     const { userId } = useContext(UserContext);
 
@@ -52,10 +53,22 @@ function MyJobs() {
             }
         };
 
+        const fetchCompletedJobs = async () => {
+            try {
+                const response = await fetch(`${API}/jobs/tradesman/${userId}/completed`);
+                const data = await response.json();
+                setFinishedJobs(data);
+                console.log('Completed Jobs:', data);
+            } catch (error) {
+                console.error('Error fetching completed jobs:', error);
+            }
+        };
+
         if (userId) {
             fetchJobs();
             fetchAssignedJobs();
             fetchApplications();
+            fetchCompletedJobs();
         }
     }, [userId]);
 
@@ -111,7 +124,7 @@ function MyJobs() {
 
     const handleCompleteJob = async (jobId) => {
         try {
-            const response = await fetch(`${API}/jobs/${jobId}`, {
+            const response = await fetch(`${API}/jobs/tradesman/${userId}/inprogress`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -119,7 +132,7 @@ function MyJobs() {
             });
             if (response.ok) {
                 alert('Job marked as complete!');
-                setAssignedJobs(assignedJobs.filter(job => job.id !== jobId));
+                setAssignedJobs(finishedJobs.filter(job => job.id !== jobId));
             } else {
                 alert('Failed to mark job as complete.');
             }
@@ -129,6 +142,37 @@ function MyJobs() {
         }
     };
 
+    const completedJobs = async(jobId) => {
+        try {           
+                    const response = await fetch(`${API}/jobs/${jobId}`, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                    });
+                    if (response.ok) {
+                        alert('Job marked as complete!');
+                        setFinishedJobs(finishedJobs);
+                    } else {
+                        alert('Failed to mark job as complete.');
+                    }
+                } catch (error) {
+                    console.error('Error marking job as complete:', error);
+                    alert('An error occurred while marking the job as complete.');
+                }
+            };
+
+            const handleInvoice = async(jobId) => {
+                if (window.confirm('Are you sure you want to invoice for this job?')) 
+                try {
+                    console.log('Sending Invoice');
+
+                }
+                catch (error) {
+                    console.error('Error fetching invoice:', error);
+                }
+            };
+            
     const pendingApplications = applications.filter(app => app.status === 'pending');
     const otherApplications = applications.filter(app => app.status !== 'pending');
 
@@ -222,7 +266,7 @@ function MyJobs() {
                 </div>
             </div>
             <div>
-                <h1>My Tradesman Jobs</h1>
+                <h1>My Active Tradesman Jobs</h1>
                 <div className="job-applications-container">
                     {assignedJobs.map((job) => (
                         <Card key={job.id} className="job-card job-card-wide">
@@ -256,6 +300,44 @@ function MyJobs() {
                     ))}
                 </div>
             </div>
+
+            <div>
+                <h1>Completed Jobs Jobs</h1>
+                <div className="job-applications-container">
+                    {finishedJobs.map((job) => (
+                        <Card key={job.id} className="job-card job-card-wide">
+                            <div className="job-card-flex">
+                                <CardMedia
+                                    component="img"
+                                    height="140"
+                                    image={job.jobImage}
+                                    alt="job image"
+                                    className="job-card-media"
+                                />
+                                <CardContent className="job-card-content">
+                                    <Typography gutterBottom variant="h5" component="div" className="job-card-title">
+                                        {job.jobTitle}
+                                    </Typography>
+                                    <Typography variant="body2" className="job-card-description">
+                                        {job.jobDescription}
+                                    </Typography>
+                                    <Typography variant="body2" className="job-card-details">
+                                        Location: {job.jobLocation}
+                                    </Typography>
+                                    <Typography variant="body2" className="job-card-details">
+                                        Trade Required: {job.tradesRequired}
+                                    </Typography>
+                                    <Button variant="contained" color="primary" onClick={() => handleInvoice(job.id)}>
+                                        Invoice
+                                    </Button>
+                                </CardContent>
+                            </div>
+                        </Card>
+                    ))}
+                </div>
+            </div>
+
+
         </div>
     );
 }
