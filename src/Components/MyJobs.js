@@ -124,11 +124,15 @@ function MyJobs() {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ status: 'completed' }), 
+                body: JSON.stringify({ status: 'completed' }),
             });
             if (response.ok) {
                 alert('Job marked as complete!');
-                setAssignedJobs(completedJobs);
+                setAssignedJobs((prevJobs) => prevJobs.filter((job) => job.id !== jobId));
+                const completedJob = assignedJobs.find((job) => job.id === jobId);
+                if (completedJob) {
+                    setFinishedJobs((prevFinishedJobs) => [...prevFinishedJobs, completedJob]);
+                }
             } else {
                 alert('Failed to mark job as complete.');
             }
