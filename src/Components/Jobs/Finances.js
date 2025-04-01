@@ -1,14 +1,14 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, useCallback } from "react";
 import API from "../../Api";
 import "../Jobs.css";
-import { UserContext } from "../../UserContext"; 
+import { UserContext } from "../../UserContext";
 
 const Finances = () => {
-    const { userId } = useContext(UserContext); 
+    const { userId } = useContext(UserContext);
     const [invoices, setInvoices] = useState([]);
     const [error, setError] = useState(null);
 
-    const fetchInvoices = async () => {
+    const fetchInvoices = useCallback(async () => {
         try {
             const response = await fetch(`${API}/invoices/${userId}`, {
                 method: "GET",
@@ -19,8 +19,8 @@ const Finances = () => {
 
             if (response.ok) {
                 const data = await response.json();
-                setInvoices(data); 
-                console.log("Fetched invoices:", data); 
+                setInvoices(data);
+                console.log("Fetched invoices:", data);
             } else {
                 setError("Failed to fetch invoices.");
             }
@@ -28,7 +28,7 @@ const Finances = () => {
             setError("An error occurred while fetching invoices.");
             console.error(err);
         }
-    };
+    }, [userId]); 
 
     const handlePayInvoice = async (invoiceId) => {
         try {
@@ -41,9 +41,9 @@ const Finances = () => {
             });
 
             if (response.ok) {
-                const { url } = await response.json(); 
-                console.log("Checkout URL:", url); 
-                
+                const { url } = await response.json();
+                console.log("Checkout URL:", url);
+
                 if (url) {
                     window.open(url, "_blank"); // Open the Stripe Checkout page in a new tab
                 } else {
@@ -60,7 +60,7 @@ const Finances = () => {
 
     useEffect(() => {
         fetchInvoices();
-    }, []);
+    }, [fetchInvoices]);
 
     return (
         <div className="finances-container">
@@ -69,7 +69,7 @@ const Finances = () => {
             {invoices.length > 0 ? (
                 <ul className="invoice-list">
                     {invoices.map((invoice, index) => (
-                        <li key={invoice.id || index} className="invoice-item">                            
+                        <li key={invoice.id || index} className="invoice-item">
                             <p><strong>Tradesman ID:</strong> {invoice.tradesmanId}</p>
                             <p><strong>Amount:</strong> €{(invoice.amount / 100).toFixed(2)}</p>
                             <p><strong>Due Date:</strong> {invoice.dueDate}</p>

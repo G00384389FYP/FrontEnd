@@ -58,12 +58,12 @@ function MyJobs() {
             }
         };
 
-        
+
 
         if (userId) {
             fetchJobs();
             fetchAssignedJobs();
-            fetchApplications();           
+            fetchApplications();
         }
     }, [userId]);
 
@@ -142,37 +142,18 @@ function MyJobs() {
         }
     };
 
-    const completedJobs = async(jobId) => {
-        try {           
-                    const response = await fetch(`${API}/jobs/${jobId}`, {
-                        method: 'PUT',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                    });
-                    if (response.ok) {
-                        alert('Job marked as complete!');
-                        setFinishedJobs(finishedJobs);
-                    } else {
-                        alert('Failed to mark job as complete.');
-                    }
-                } catch (error) {
-                    console.error('Error marking job as complete:', error);
-                    alert('An error occurred while marking the job as complete.');
-                }
-            };
 
-            const handleInvoice = async(jobId) => {
-                if (window.confirm('Are you sure you want to invoice for this job?')) 
-                try {
-                    console.log('Sending Invoice for jobId:', jobId);
-                    navigate(`/invoices/${jobId}`);
+    const handleInvoice = async (jobId) => {
+        if (window.confirm('Are you sure you want to invoice for this job?'))
+            try {
+                console.log('Sending Invoice for jobId:', jobId);
+                navigate(`/invoices/${jobId}`);
 
-                }
-                catch (error) {
-                    console.error('Error fetching invoice:', error);
-                }
-            };
+            }
+            catch (error) {
+                console.error('Error fetching invoice:', error);
+            }
+    };
 
     const pendingApplications = applications.filter(app => app.status === 'pending');
     const otherApplications = applications.filter(app => app.status !== 'pending');
