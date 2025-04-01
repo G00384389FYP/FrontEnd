@@ -34,10 +34,15 @@ function MyJobs() {
             try {
                 const response = await fetch(`${API}/jobs/tradesman/${userId}`);
                 const data = await response.json();
-                setAssignedJobs(data);
-                console.log('Assigned Jobs:', data);
+                if (Array.isArray(data)) {
+                    setAssignedJobs(data);
+                } else {
+                    console.error('Expected an array but received:', data);
+                    setAssignedJobs([]); // Fallback to an empty array
+                }
             } catch (error) {
                 console.error('Error fetching assigned jobs:', error);
+                setAssignedJobs([]); // Fallback to an empty array
             }
         };
 
@@ -53,22 +58,12 @@ function MyJobs() {
             }
         };
 
-        const fetchCompletedJobs = async () => {
-            try {
-                const response = await fetch(`${API}/jobs/tradesman/${userId}/completed`);
-                const data = await response.json();
-                setFinishedJobs(data);
-                console.log('Completed Jobs:', data);
-            } catch (error) {
-                console.error('Error fetching completed jobs:', error);
-            }
-        };
+        
 
         if (userId) {
             fetchJobs();
             fetchAssignedJobs();
-            fetchApplications();
-            fetchCompletedJobs();
+            fetchApplications();           
         }
     }, [userId]);
 
@@ -124,15 +119,16 @@ function MyJobs() {
 
     const handleCompleteJob = async (jobId) => {
         try {
-            const response = await fetch(`${API}/jobs/tradesman/${userId}/inprogress`, {
+            const response = await fetch(`${API}/jobs/${jobId}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
                 },
+                body: JSON.stringify({ status: 'completed' }), 
             });
             if (response.ok) {
                 alert('Job marked as complete!');
-                setAssignedJobs(finishedJobs.filter(job => job.id !== jobId));
+                setAssignedJobs(completedJobs);
             } else {
                 alert('Failed to mark job as complete.');
             }
@@ -269,7 +265,7 @@ function MyJobs() {
             <div>
                 <h1>My Active Tradesman Jobs</h1>
                 <div className="job-applications-container">
-                    {assignedJobs.map((job) => (
+                    {Array.isArray(assignedJobs) && assignedJobs.map((job) => (
                         <Card key={job.id} className="job-card job-card-wide">
                             <div className="job-card-flex">
                                 <CardMedia

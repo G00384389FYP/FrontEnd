@@ -136,6 +136,7 @@ function InvoiceHome() {
                         value={invoiceDetails.DueDate}
                         onChange={handleChange}
                         className="form-input"
+                        min={new Date().toISOString().split("T")[0]} 
                     />
                 </div>
                 

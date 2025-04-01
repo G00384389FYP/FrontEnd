@@ -19,6 +19,7 @@ import InvoiceHome from './Components/Jobs/InvoiceHome';
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import Checkout from './Components/Jobs/Checkout';
+import Finances from './Components/Jobs/Finances';
 
 
 // Initialize MSAL instance
@@ -55,6 +56,7 @@ function AuthContent() {
                     <Route path="/jobs/:jobId" element={<JobDetails />} />
                     <Route path="/my-jobs" element={<MyJobs />} />
                     <Route path="/invoices/:jobId" element={<InvoiceHome />} />
+                    <Route path="/finances/" element={<Finances />} />
                     <Route
                         path="/invoices/pay"
                         element={
