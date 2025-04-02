@@ -12,6 +12,7 @@ import API from '../../Api';
 
 function CustomerCentre() {
     const [jobs, setJobs] = useState([]);
+    const [completeJobs, setCompleteJobs] = useState([]);
     const [assignedJobs, setAssignedJobs] = useState([]);
     const [applications, setApplications] = useState([]);
     const [finishedJobs, setFinishedJobs] = useState([]);
@@ -27,14 +28,24 @@ function CustomerCentre() {
             } catch (error) {
                 console.error('Error fetching jobs:', error);
             }
-        };        
+        };  
+        const fetchCompleteJobs = async () => {
+            try {
+                const response = await fetch(`${API}/jobs/user/${userId}/completed`);
+                const data = await response.json();
+                setCompleteJobs(data)
+                
+            } catch (error) {
+                console.error('Error fetching jobs:', error);
+            }
+        };  
+        
 
         const fetchApplications = async () => {
             try {
                 const response = await fetch(`${API}/customers/job-applications?userId=${userId}`);
                 const data = await response.json();
                 setApplications(Array.isArray(data) ? data : []);
-                console.log('Applications:', data);
             } catch (error) {
                 console.error('Error fetching applications:', error);
                 setApplications([]);
@@ -42,7 +53,8 @@ function CustomerCentre() {
         };
 
         if (userId) {
-            fetchJobs();           
+            fetchJobs();
+            fetchCompleteJobs();           
             fetchApplications();
         }
     }, [userId]);
@@ -90,6 +102,26 @@ function CustomerCentre() {
         }
     };  
 
+    const deleteJob = async (jobId) => {
+        try {
+            const response = await fetch(`${API}/jobs/${jobId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+            if (response.ok) {
+                alert('Job deleted successfully!');
+                
+            } else {
+                alert('Failed to delete job.');
+            }
+        } catch (error) {
+            console.error('Error deleting job:', error);
+            alert('An error occurred while deleting the job.');
+        }
+    };
+
 
     const pendingApplications = applications.filter(app => app.status === 'pending');
     const otherApplications = applications.filter(app => app.status !== 'pending');
@@ -126,8 +158,10 @@ function CustomerCentre() {
                                     <Typography variant="body2" className="job-card-details">
                                         Trade Required: {job.tradesRequired}
                                     </Typography>
-                                </CardContent>
+                                </CardContent>                                
                             </CardActionArea>
+                            <button onClick={() => deleteJob(job.id)}>Delete Job</button>
+                            <button>Edit Job </button>
                         </Card>
                     ))}
                 </div>
@@ -188,7 +222,7 @@ function CustomerCentre() {
             <div>
                 <h1>Completed Jobs Jobs</h1>
                 <div className="job-applications-container">
-                    {finishedJobs.map((job) => (
+                    {completeJobs.map((job) => (
                         <Card key={job.id} className="job-card job-card-wide">
                             <div className="job-card-flex">
                                 <CardMedia

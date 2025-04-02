@@ -84,7 +84,7 @@ const Home = () => {
                         </CardActionArea>
                     </Card>
 
-                    <Card onClick={navigate('/customer-centre') } sx={{ maxWidth: 345 }}>
+                    <Card onClick={() => navigate('/customer-centre')} sx={{ maxWidth: 345 }}>
                         <CardActionArea>
                             <CardMedia
                                 component="img"
