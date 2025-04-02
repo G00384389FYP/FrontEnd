@@ -384,3 +384,13 @@
     color: #777;
     margin-top: 20px;
 }
+
+
+.paid-invoice-item {
+    padding: 15px;
+    margin-bottom: 15px;
+    background-color: #8bf46f;
+    border: 1px solid #8bf46f;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
