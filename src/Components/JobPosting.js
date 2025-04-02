@@ -2,7 +2,7 @@ import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { UserContext } from '../UserContext';
 import JobSwitch from './JobSwitch';
-import  API  from '../Api';
+import API from '../Api';
 
 function JobPosting() {
     const { userId } = useContext(UserContext);
@@ -14,6 +14,7 @@ function JobPosting() {
         JobLocation: 'Dublin',
         JobImage: ''
     });
+    const [imageFile, setImageFile] = useState(null); 
     const navigate = useNavigate();
 
     const handleChange = (e) => {
@@ -24,6 +25,36 @@ function JobPosting() {
         }));
     };
 
+    const handleFileChange = (e) => {
+        setImageFile(e.target.files[0]); 
+    };
+
+    const uploadImageToBlob = async (file) => {
+        try {
+            const formData = new FormData();
+            formData.append('file', file); 
+
+            for (let [key, value] of formData.entries()) {
+                console.log(`${key}:`, value);
+            }
+
+            const response = await fetch(`${API}/jobs/image`, {
+                method: 'POST',
+                body: formData,
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const data = await response.json();
+            return data.url; 
+        } catch (error) {
+            console.error('Error uploading image:', error);
+            throw error;
+        }
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (!userId) {
@@ -31,12 +62,15 @@ function JobPosting() {
             return;
         }
 
-        const requestData = { ...jobDetails, UserId: String(userId) };
-        console.log("Request Body:", JSON.stringify(requestData, null, 2));
-
         try {
-            console.log('Sending POST request with data:', requestData);
-            console.log('job:', jobDetails);
+            let imageUrl = jobDetails.JobImage;            
+            if (imageFile) {
+                imageUrl = await uploadImageToBlob(imageFile);
+            }
+
+            const requestData = { ...jobDetails, UserId: String(userId), JobImage: imageUrl };
+            console.log("Request Body:", JSON.stringify(requestData, null, 2));
+
             const response = await fetch(`${API}/jobs`, {
                 method: 'POST',
                 headers: {
@@ -59,14 +93,14 @@ function JobPosting() {
 
     return (
         <div>
-            <div className='job-switch' >
+            <div className='job-switch'>
                 <JobSwitch />
             </div>
             <div className="job-posting-container">
                 <form className="job-posting-form" onSubmit={handleSubmit}>
                     <h2>Create Job Posting</h2>
                     <input type="text" name="JobTitle" value={jobDetails.JobTitle} onChange={handleChange} placeholder="Job Title" className="form-input" />
-                    <input type="text" name="JobImage" value={jobDetails.JobImage} onChange={handleChange} placeholder="https://..." className="form-input" />                    
+                    <input type="file" onChange={handleFileChange} className="form-input" />
                     <textarea name="JobDescription" value={jobDetails.JobDescription} onChange={handleChange} placeholder="Job Description" className="form-textarea"></textarea>
                     <select name="TradesRequired" value={jobDetails.TradesRequired} onChange={handleChange} className="form-select">
                         <option value="Plumber">Plumber</option>

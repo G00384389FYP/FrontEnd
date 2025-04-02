@@ -16,6 +16,8 @@ function CustomerCentre() {
     const [assignedJobs, setAssignedJobs] = useState([]);
     const [applications, setApplications] = useState([]);
     const [finishedJobs, setFinishedJobs] = useState([]);
+    const [showPendingApplications, setShowPendingApplications] = useState(true);
+    const [showProcessedApplications, setShowProcessedApplications] = useState(true);
     const navigate = useNavigate();
     const { userId } = useContext(UserContext);
 
@@ -137,7 +139,7 @@ function CustomerCentre() {
                 </div>
                 <div className="cards-container">
                     {jobs.map((job) => (
-                        <Card key={job.id} className="job-card">
+                        <Card key={job.id} className="job-card" onClick={() => navigate(`/jobs/${job.id}`)} sx={{ maxWidth: 345 }}>
                             <CardActionArea >
                                 <CardMedia
                                     component="img"
@@ -161,66 +163,74 @@ function CustomerCentre() {
                                 </CardContent>                                
                             </CardActionArea>
                             <button onClick={() => deleteJob(job.id)}>Delete Job</button>
-                            <button>Edit Job </button>
+                            
                         </Card>
                     ))}
                 </div>
                 <div className="header">
-                    <h1>Pending Job Applications</h1>
+                    <h1 onClick={() => setShowPendingApplications(!showPendingApplications)}>
+                        Pending Job Applications {showPendingApplications ? '-' : '+'}
+                    </h1>
                 </div>
-                <div className="job-applications-container">
-                    {pendingApplications.map((application) => (
-                        <Card key={application.id} className="job-card">
-                            <CardContent className="job-card-content">
-                                <Typography gutterBottom variant="h5" component="div" className="job-card-title">
-                                    {application.jobTitle}
-                                </Typography>
-                                <Typography variant="body2" className="job-card-description">
-                                    Applicant: {application.tradesman.name}
-                                </Typography>
-                                <Typography variant="body2" className="job-card-details">
-                                    Applied on: {new Date(application.createdAt).toLocaleDateString()}
-                                </Typography>
-                                <div className="application-buttons">
-                                    <Button variant="contained" color="primary" onClick={() => handleAcceptApplication(application.jobId, application.id)}>
-                                        Accept
-                                    </Button>
-                                    <Button variant="contained" color="secondary" onClick={() => handleDeclineApplication(application.jobId, application.id)}>
-                                        Decline
-                                    </Button>
-                                </div>
-                            </CardContent>
-                        </Card>
-                    ))}
-                </div>
+                {showPendingApplications && (
+                    <div className="job-applications-container">
+                        {pendingApplications.map((application) => (
+                            <Card key={application.id} className="job-card">
+                                <CardContent className="job-card-content">
+                                    <Typography gutterBottom variant="h5" component="div" className="job-card-title">
+                                        {application.jobTitle}
+                                    </Typography>
+                                    <Typography variant="body2" className="job-card-description">
+                                        Applicant: {application.tradesman.name}
+                                    </Typography>
+                                    <Typography variant="body2" className="job-card-details">
+                                        Applied on: {new Date(application.createdAt).toLocaleDateString()}
+                                    </Typography>
+                                    <div className="application-buttons">
+                                        <Button variant="contained" color="primary" onClick={() => handleAcceptApplication(application.jobId, application.id)}>
+                                            Accept
+                                        </Button>
+                                        <Button variant="contained" color="secondary" onClick={() => handleDeclineApplication(application.jobId, application.id)}>
+                                            Decline
+                                        </Button>
+                                    </div>
+                                </CardContent>
+                            </Card>
+                        ))}
+                    </div>
+                )}
                 <div className="header">
-                    <h1>Processed Job Applications</h1>
+                    <h1 onClick={() => setShowProcessedApplications(!showProcessedApplications)}>
+                        Processed Job Applications {showProcessedApplications ? '-' : '+'}
+                    </h1>
                 </div>
-                <div className="job-applications-container">
-                    {otherApplications.map((application) => (
-                        <Card key={application.id} className="job-card">
-                            <CardContent className="job-card-content">
-                                <Typography gutterBottom variant="h5" component="div" className="job-card-title">
-                                    {application.jobTitle}
-                                </Typography>
-                                <Typography variant="body2" className="job-card-description">
-                                    Applicant: {application.tradesman.name}
-                                </Typography>
-                                <Typography variant="body2" className="job-card-description">
-                                    Status: {application.status}
-                                </Typography>
-                                <Typography variant="body2" className="job-card-details">
-                                    Applied on: {new Date(application.createdAt).toLocaleDateString()}
-                                </Typography>
-                            </CardContent>
-                        </Card>
-                    ))}
-                </div>
+                {showProcessedApplications && (
+                    <div className="job-applications-container">
+                        {otherApplications.map((application) => (
+                            <Card key={application.id} className="job-card">
+                                <CardContent className="job-card-content">
+                                    <Typography gutterBottom variant="h5" component="div" className="job-card-title">
+                                        {application.jobTitle}
+                                    </Typography>
+                                    <Typography variant="body2" className="job-card-description">
+                                        Applicant: {application.tradesman.name}
+                                    </Typography>
+                                    <Typography variant="body2" className="job-card-description">
+                                        Status: {application.status}
+                                    </Typography>
+                                    <Typography variant="body2" className="job-card-details">
+                                        Applied on: {new Date(application.createdAt).toLocaleDateString()}
+                                    </Typography>
+                                </CardContent>
+                            </Card>
+                        ))}
+                    </div>
+                )}
             </div>
             
 
             <div>
-                <h1>Completed Jobs Jobs</h1>
+                <h1>Past Jobs</h1>
                 <div className="job-applications-container">
                     {completeJobs.map((job) => (
                         <Card key={job.id} className="job-card job-card-wide">
