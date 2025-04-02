@@ -17,6 +17,7 @@ import JobDetails from './Components/JobDetails';
 import MyJobs from './Components/MyJobs';
 import InvoiceHome from './Components/Jobs/InvoiceHome';
 import Finances from './Components/Jobs/Finances';
+import PaymentSuccess from './Components/Jobs/PaymentSucess';
 
 
 // Initialize MSAL instance
@@ -53,6 +54,8 @@ function AuthContent() {
                     <Route path="/my-jobs" element={<MyJobs />} />
                     <Route path="/invoices/:jobId" element={<InvoiceHome />} />
                     <Route path="/finances/" element={<Finances />} />
+                    <Route path="/my-jobs/payment/success" element={<PaymentSuccess />} />
+                    <Route path="/my-jobs/payment/cancel" element={<PaymentSuccess />} />
                     
                 </Routes>                   
                 
