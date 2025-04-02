@@ -42,7 +42,7 @@ export default function JobSwitch() {
           }
         }}
       >
-        Find Jobs
+        Browse Jobs
       </ToggleButton>
       <ToggleButton 
         value="post" 
@@ -55,17 +55,7 @@ export default function JobSwitch() {
       >
         Post a Job
       </ToggleButton>
-      <ToggleButton 
-        value="viewmyjobs" 
-        sx={{ 
-          backgroundColor: alignment === 'viewmyjobs' ? 'lightblue' : 'inherit',
-          '&.Mui-selected': {
-            backgroundColor: 'lightblue',
-          }
-        }}
-      >
-        My Jobs
-      </ToggleButton>
+      
     </ToggleButtonGroup>
   );
 }

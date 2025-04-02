@@ -83,6 +83,25 @@ const Home = () => {
                             </CardContent>
                         </CardActionArea>
                     </Card>
+
+                    <Card onClick={navigate('/customer-centre') } sx={{ maxWidth: 345 }}>
+                        <CardActionArea>
+                            <CardMedia
+                                component="img"
+                                height="140"
+                                 image=""
+                                alt="contact img"
+                            />
+                            <CardContent>
+                                <Typography gutterBottom variant="h5" component="div">
+                                    Customer Centre
+                                </Typography>
+                                <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                                    Customer Care
+                                </Typography>
+                            </CardContent>
+                        </CardActionArea>
+                    </Card>
                 </div>
             </div>
             <footer className="home-footer">
