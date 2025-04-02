@@ -21,7 +21,6 @@ const Finances = () => {
             if (response.ok) {
                 const data = await response.json();
                 setInvoices(data);
-                console.log("Fetched invoices:", data);
             } else {
                 setError("Failed to fetch invoices.");
             }
@@ -30,6 +29,32 @@ const Finances = () => {
             console.error(err);
         }
     }, [userId]);
+
+    const CheckInvoiceSession = useCallback(async (invoice) => {
+        const sessionId = invoice.stripeCheckoutSessionId; 
+        console.log("Session ID:", sessionId);
+    
+        if (!sessionId) {
+            alert("No session ID provided. A payment process has not been initiated."); 
+            return;
+        }
+    
+        try {
+            const res = await fetch(`${API}/invoices/confirm/${sessionId}`, {
+                method: "PUT",
+            });
+    
+            if (res.ok) {
+                alert("Payment confirmed! Your invoice is marked as paid.");
+            } else {
+                const msg = await res.text();
+                alert(`Payment could not be confirmed: ${msg}`); 
+            }
+        } catch (err) {
+            alert("An error occurred while confirming the payment.");
+        }
+    }, []);
+    
 
     const fetchPaidInvoices = useCallback(async () => {
         try {
@@ -43,13 +68,11 @@ const Finances = () => {
             if (response.ok) {
                 const data = await response.json();
                 setPaidInvoices(data);
-                console.log("Fetched paid invoices:", data);
             } else {
                 setError("Failed to fetch invoices.");
             }
         } catch (err) {
             setError("An error occurred while fetching invoices.");
-            console.error(err);
         }
     }, [userId]);
 
@@ -75,14 +98,15 @@ const Finances = () => {
                 alert("Failed to initiate payment.");
             }
         } catch (err) {
-            console.error("Error initiating payment:", err);
             alert("An error occurred while initiating the payment.");
         }
     };
+    
 
     useEffect(() => {
         fetchInvoices();
         fetchPaidInvoices();
+        
     }, [fetchInvoices, fetchPaidInvoices]);
 
     return (
@@ -102,9 +126,15 @@ const Finances = () => {
                                 <p><strong>Job ID:</strong> {invoice.jobId}</p>
                                 <button
                                     className="pay-button"
-                                    onClick={() => handlePayInvoice(invoice.invoiceId)}
+                                    onClick={() => handlePayInvoice(invoice.invoiceId)} 
                                 >
                                     Pay
+                                </button>
+                                <button
+                                    className="pay-refresh-button"
+                                    onClick={() => CheckInvoiceSession(invoice.stripeCheckoutSessionId)}
+                                >
+                                    Refresh  Status
                                 </button>
                                 
                             </li>
