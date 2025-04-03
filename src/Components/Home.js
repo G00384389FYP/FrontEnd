@@ -65,13 +65,14 @@ const Home = () => {
                         </CardActionArea>
                     </Card>
 
-                    <Card sx={{ maxWidth: 345 }}>
+                    <Card onClick={() => navigate('/tradesman-centre')} sx={{ maxWidth: 345 }}>
                         <CardActionArea>
                             <CardMedia
                                 component="img"
                                 height="140"
-                                 image=""
+                                 image="https://nixersstorage.blob.core.windows.net/profile-images/tradesman.jpg"
                                 alt="contact img"
+                                sx={{ objectFit: 'contain' }} 
                             />
                             <CardContent>
                                 <Typography gutterBottom variant="h5" component="div">

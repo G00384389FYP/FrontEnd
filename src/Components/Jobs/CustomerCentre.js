@@ -146,6 +146,7 @@ function CustomerCentre() {
                                     height="140"
                                     image={job.jobImage}
                                     alt="job image"
+                                    sx={{ objectFit: 'fill' }}
                                 />
                                 <CardContent className="job-card-content">
                                     <Typography gutterBottom variant="h5" component="div" className="job-card-title">
@@ -241,6 +242,7 @@ function CustomerCentre() {
                                     image={job.jobImage}
                                     alt="job image"
                                     className="job-card-media"
+                                    sx={{ objectFit: 'contain' }}
                                 />
                                 <CardContent className="job-card-content">
                                     <Typography gutterBottom variant="h5" component="div" className="job-card-title">

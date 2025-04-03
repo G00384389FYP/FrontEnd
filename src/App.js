@@ -22,6 +22,7 @@ import Reviews from './Components/Jobs/Reviews';
 import ReviewCreate from './Components/Jobs/ReviewCreate';
 import ReviewEdit from './Components/Jobs/ReviewEdit'; 
 import CustomerCentre from './Components/Jobs/CustomerCentre';
+import TradesmanCentre from './Components/Jobs/TradesmanCentre';
 
 
 // Initialize MSAL instance
@@ -60,6 +61,7 @@ function AuthContent() {
                     <Route path="/finances/" element={<Finances />} />
                     <Route path="/my-jobs/payment/success" element={<PaymentSuccess />} />
                     <Route path="/customer-centre" element={<CustomerCentre />} />
+                    <Route path="/tradesman-centre" element={<TradesmanCentre />} />
                     <Route path="/reviews" element={<Reviews />} />
                     <Route path="/reviews/new" element={<ReviewCreate />} />
                     {/* <Route path="/reviews/edit:reviewId" element={<ReviewEdit/>} /> */}

@@ -57,6 +57,13 @@ function JobPosting() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        // Validation: Check if all fields are filled
+        if (!jobDetails.JobTitle || !jobDetails.JobDescription || !jobDetails.TradesRequired || !jobDetails.JobLocation || (!jobDetails.JobImage && !imageFile)) {
+            alert('Please fill out all fields before submitting the form.');
+            return;
+        }
+
         if (!userId) {
             console.error('User ID is not available');
             return;
@@ -107,7 +114,48 @@ function JobPosting() {
                         <option value="Electrician">Electrician</option>
                         <option value="Carpenter">Carpenter</option>
                     </select>
-                    <input type="text" name="JobLocation" value={jobDetails.JobLocation} onChange={handleChange} placeholder="Job Location" className="form-input" />
+                    <input 
+                        list="counties" 
+                        name="JobLocation" 
+                        value={jobDetails.JobLocation} 
+                        onChange={handleChange} 
+                        placeholder="Job Location" 
+                        className="form-input" 
+                    />
+                    <datalist id="counties">
+                        <option value="Antrim" />
+                        <option value="Armagh" />
+                        <option value="Carlow" />
+                        <option value="Cavan" />
+                        <option value="Clare" />
+                        <option value="Cork" />
+                        <option value="Derry" />
+                        <option value="Donegal" />
+                        <option value="Down" />
+                        <option value="Dublin" />
+                        <option value="Fermanagh" />
+                        <option value="Galway" />
+                        <option value="Kerry" />
+                        <option value="Kildare" />
+                        <option value="Kilkenny" />
+                        <option value="Laois" />
+                        <option value="Leitrim" />
+                        <option value="Limerick" />
+                        <option value="Longford" />
+                        <option value="Louth" />
+                        <option value="Mayo" />
+                        <option value="Meath" />
+                        <option value="Monaghan" />
+                        <option value="Offaly" />
+                        <option value="Roscommon" />
+                        <option value="Sligo" />
+                        <option value="Tipperary" />
+                        <option value="Tyrone" />
+                        <option value="Waterford" />
+                        <option value="Westmeath" />
+                        <option value="Wexford" />
+                        <option value="Wicklow" />
+                    </datalist>
                     <button type="submit" className="form-button">Create Job</button>
                 </form>
             </div>
