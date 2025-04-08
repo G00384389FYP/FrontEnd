@@ -42,6 +42,7 @@ function CustomerCentre() {
             }
         };  
         
+        
 
         const fetchApplications = async () => {
             try {

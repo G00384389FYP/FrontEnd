@@ -72,7 +72,6 @@ function JobPosting() {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        
         if (!jobDetails.JobTitle || !jobDetails.JobDescription || !jobDetails.TradesRequired || !jobDetails.JobLocation || (!jobDetails.JobImage && !imageFile)) {
             alert('Please fill out all fields before submitting the form.');
             return;
@@ -111,9 +110,23 @@ function JobPosting() {
 
             const data = await response.json();
             console.log('Job created successfully:', data);
+
+            const updateResponse = await fetch(`${API}/customers/${userId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(requestData)
+            });
+
+            if (!updateResponse.ok) {
+                throw new Error(`Failed to update customer profile. HTTP status: ${updateResponse.status}`);
+            }
+
+            console.log('Customer profile updated successfully');
             navigate('/jobs');
         } catch (error) {
-            console.error('Error creating job:', error);
+            console.error('Error creating job or updating customer profile:', error);
         }
     };
 

@@ -7,18 +7,13 @@ import { Card, CardContent, Typography, CardActions, Button } from '@mui/materia
 function MyProfiles() {
     const navigate = useNavigate();
     const { userId } = useContext(UserContext);
-
     const [customerProfile, setCustomerProfile] = useState(null);
-    const [cxExists, setCxExists] = useState(null);
-    // eslint-disable-next-line
-    const [customerJoinDate, setcustomerJoinDate] = useState(null);
-
+    const [cxExists, setCxExists] = useState(null);  
     const [tradesmanProfile, setTradesmanProfile] = useState(null);
     const [txExists, setTxExists] = useState(null);
 
     useEffect(() => {
         if (userId) {
-            console.log('My Profile UserID:', userId);
             checkCustomerProfile(userId);
             checkTradesmanProfile(userId);
         }
@@ -36,8 +31,7 @@ function MyProfiles() {
             // console.log('Response from backend:', data);
             setCxExists(data.exists);
             if (data.exists) {
-                setCustomerProfile(data.customerProfile);
-                setcustomerJoinDate(data.customerProfile.dateAdded);
+                setCustomerProfile(data.customerProfile);               
             } else {
                 setCustomerProfile(null);
             }
@@ -79,21 +73,51 @@ function MyProfiles() {
                                     Customer Profile
                                 </Typography>
                                 <Typography variant="body2" color="text.secondary">
-                                    <strong>User ID:</strong> {customerProfile.userId}
+                                    <strong>My User ID:</strong> {customerProfile.userId}
                                 </Typography>
                                 <Typography variant="body2" color="text.secondary">
-                                    <strong>Jobs Posted:</strong> {customerProfile.jobsPosted}
+                                    <strong>My number of Jobs Posted:</strong> {customerProfile.jobsPosted}
                                 </Typography>
+                                
                                 <Typography variant="body2" color="text.secondary">
-                                    <strong>Is Suspended:</strong> {customerProfile.isSuspended ? 'Yes' : 'No'}
-                                </Typography>
-                                <Typography variant="body2" color="text.secondary">
-                                    <strong>Date Added:</strong> {customerProfile.dateAdded}
+                                    <strong>Join Date :</strong> {customerProfile.dateAdded}
                                 </Typography>
                             </CardContent>
                             <CardActions>
                                 <Button size="small" onClick={() => navigate('/job-posting')}>Post a New Job</Button>
-                                <Button size="small">See My Jobs</Button>
+                                <Button size="small" onClick={() => navigate('/customer-centre')}>See My Jobs</Button>
+                            </CardActions>
+                        </Card>
+                    </div>
+                )}
+            </div>
+            <div>
+                {tradesmanProfile && (
+                    <div className="tradesman-card-container">
+                        <Card sx={{ maxWidth: 345, margin: '20px auto' }}>
+                            <CardContent>
+                                <Typography variant="h5" component="div">
+                                    Tradesman Profile
+                                </Typography>
+                                <Typography variant="body2" color="text.secondary">
+                                    <strong>My User ID:</strong> {tradesmanProfile.userId}
+                                </Typography>
+                                <Typography variant="body2" color="text.secondary">
+                                    <strong>Trade:</strong> {tradesmanProfile.trade}
+                                </Typography>
+                                <Typography variant="body2" color="text.secondary">
+                                    <strong>Location:</strong> {tradesmanProfile.location}
+                                </Typography>
+                                <Typography variant="body2" color="text.secondary">
+                                    <strong>Number of Jobs Completed:</strong> {tradesmanProfile.numberOfJobsCompleted}
+                                </Typography>
+                                <Typography variant="body2" color="text.secondary">
+                                    <strong>Join Date:</strong> {tradesmanProfile.dateJoined}
+                                </Typography>
+                            </CardContent>
+                            <CardActions>
+                                <Button size="small" onClick={() => navigate('/job-posting')}>Edit Tradesman Account</Button>
+                                <Button size="small" onClick={() => navigate('/tradesman-centre')}>See My Jobs</Button>
                             </CardActions>
                         </Card>
                     </div>
@@ -109,31 +133,7 @@ function MyProfiles() {
                     <div className='profiles-container'>
 
 
-                        <div className='CustomerDetails'>
-                            <h2>Customer Profile</h2>
-                            <table>
-                                <tbody>
-                                    <tr>
-                                        <td>User ID:</td>
-                                        <td>{customerProfile?.userId}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Jobs Posted:</td>
-                                        <td>{customerProfile?.jobsPosted}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Is Suspended:</td>
-                                        <td>{customerProfile?.isSuspended ? 'Yes' : 'No'}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Date Added:</td>
-                                        <td>{customerProfile?.dateAdded}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            <button className='profile-button' onClick={() => navigate('/job-posting')}>Post a new Job</button>
-                            <button className='profile-button'>See my Jobs</button>
-                        </div>
+                        
                         <div className='TradesmanProfile'>
                             <h2>Tradesman Profile</h2>
                             {txExists ? (
@@ -178,6 +178,7 @@ function MyProfiles() {
                     </button>
                 )}
             </div>
+
         </div>
     );
 }

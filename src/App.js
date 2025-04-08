@@ -20,7 +20,7 @@ import Finances from './Components/Jobs/Finances';
 import PaymentSuccess from './Components/Jobs/PaymentSucess';
 import Reviews from './Components/Jobs/Reviews';
 import ReviewCreate from './Components/Jobs/ReviewCreate';
-import ReviewEdit from './Components/Jobs/ReviewEdit'; 
+// import ReviewEdit from './Components/Jobs/ReviewEdit'; 
 import CustomerCentre from './Components/Jobs/CustomerCentre';
 import TradesmanCentre from './Components/Jobs/TradesmanCentre';
 import { ToastContainer } from 'react-toastify';

@@ -36,7 +36,7 @@ const Home = () => {
                             <CardMedia
                                 component="img"
                                 height="140"
-                                image="https://images"
+                                image="https://nixersstorage.blob.core.windows.net/profile-images/review_stars.png"
                                 alt="jobs img"
                             />
                             <CardContent>
@@ -44,7 +44,7 @@ const Home = () => {
                                     Reviews
                                 </Typography>
                                 <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                                    See completed Nixers
+                                    See what people have to say about completed Nixers
                                 </Typography>
                             </CardContent>
                         </CardActionArea>
@@ -55,7 +55,7 @@ const Home = () => {
                             <CardMedia
                                 component="img"
                                 height="140"
-                                image="https://images"
+                                image="https://nixersstorage.blob.core.windows.net/profile-images/job_posting_img.png"
                                 alt="profile img"
                             />
                             <CardContent>
@@ -80,7 +80,7 @@ const Home = () => {
                             />
                             <CardContent>
                                 <Typography gutterBottom variant="h5" component="div">
-                                    Find Nixers
+                                    Tradesman Centre
                                 </Typography>
                                 <Typography variant="body2" sx={{ color: 'text.secondary' }}>
                                     Are you a tradesman? Browse Nixers
@@ -94,7 +94,7 @@ const Home = () => {
                             <CardMedia
                                 component="img"
                                 height="140"
-                                 image=""
+                                 image="https://nixersstorage.blob.core.windows.net/profile-images/customer_centre.png"
                                 alt="contact img"
                             />
                             <CardContent>
