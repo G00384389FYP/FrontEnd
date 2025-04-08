@@ -23,6 +23,8 @@ import ReviewCreate from './Components/Jobs/ReviewCreate';
 import ReviewEdit from './Components/Jobs/ReviewEdit'; 
 import CustomerCentre from './Components/Jobs/CustomerCentre';
 import TradesmanCentre from './Components/Jobs/TradesmanCentre';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 // Initialize MSAL instance
@@ -38,6 +40,7 @@ function App() {
                     <AuthContent />
                 </Router>
             </UserProvider>
+            <ToastContainer />
         </MsalProvider>
     );
 }

@@ -13,6 +13,10 @@ const Home = () => {
         navigate('/job-posting');
     };
 
+    const handleSeeReviewsClick = () => {
+        navigate('/reviews');
+    };
+
     return (
         <div className="home-container">
             <header className="home-header">
@@ -27,7 +31,7 @@ const Home = () => {
             </header>
             <div className="home-content">
                 <div className="cards-container">
-                    <Card sx={{ maxWidth: 345 }} >
+                    <Card sx={{ maxWidth: 345 }}  onClick={handleSeeReviewsClick}>
                         <CardActionArea>
                             <CardMedia
                                 component="img"
@@ -37,10 +41,10 @@ const Home = () => {
                             />
                             <CardContent>
                                 <Typography gutterBottom variant="h5" component="div">
-                                    My Nixers
+                                    Reviews
                                 </Typography>
                                 <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                                    See previous Nixers
+                                    See completed Nixers
                                 </Typography>
                             </CardContent>
                         </CardActionArea>
