@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { UserContext } from '../UserContext';
 import API from '../Api';
+import { Card, CardContent, Typography, CardActions, Button } from '@mui/material';
 
 function MyProfiles() {
     const navigate = useNavigate();
@@ -70,6 +71,35 @@ function MyProfiles() {
         <div>
             <h1>My Profiles</h1>
             <div>
+                {customerProfile && (
+                    <div className="customer-card-container">
+                        <Card sx={{ maxWidth: 345, margin: '20px auto' }}>
+                            <CardContent>
+                                <Typography variant="h5" component="div">
+                                    Customer Profile
+                                </Typography>
+                                <Typography variant="body2" color="text.secondary">
+                                    <strong>User ID:</strong> {customerProfile.userId}
+                                </Typography>
+                                <Typography variant="body2" color="text.secondary">
+                                    <strong>Jobs Posted:</strong> {customerProfile.jobsPosted}
+                                </Typography>
+                                <Typography variant="body2" color="text.secondary">
+                                    <strong>Is Suspended:</strong> {customerProfile.isSuspended ? 'Yes' : 'No'}
+                                </Typography>
+                                <Typography variant="body2" color="text.secondary">
+                                    <strong>Date Added:</strong> {customerProfile.dateAdded}
+                                </Typography>
+                            </CardContent>
+                            <CardActions>
+                                <Button size="small" onClick={() => navigate('/job-posting')}>Post a New Job</Button>
+                                <Button size="small">See My Jobs</Button>
+                            </CardActions>
+                        </Card>
+                    </div>
+                )}
+            </div>
+            <div>
                 {cxExists === null ? (
                     <div>
                         <p>Loading...</p>
@@ -77,6 +107,8 @@ function MyProfiles() {
                     </div>
                 ) : cxExists ? (
                     <div className='profiles-container'>
+
+
                         <div className='CustomerDetails'>
                             <h2>Customer Profile</h2>
                             <table>

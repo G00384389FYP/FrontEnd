@@ -1,46 +1,40 @@
 import React, { useState, useEffect } from 'react';
 import API from '../../Api';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import Typography from '@mui/material/Typography';
+import { useLocation } from 'react-router-dom';
 
 const ReviewCreate = () => {
+    const location = useLocation();
+    const { job, userId } = location.state || {}; 
     const [reviews, setReviews] = useState([]);
     const [formData, setFormData] = useState({
-        JobId: '',
-        InvoiceId: '',
-        ReviewerId: '',
-        WorkRating: '',
-        CustomerServiceRating: '',
-        PriceRating: '',
+        JobId: job?.id || '',
+        ReviewerId: userId || '',
+        WorkRating: 0,
+        CustomerServiceRating: 0,
+        PriceRating: 0,
         Comment: '',
     });
 
-    // Fetch reviews from the server
     useEffect(() => {
         fetch(`${API}/reviews`)
             .then((response) => response.json())
             .then((data) => {
-                console.log('Fetched reviews:', data); // Log the fetched reviews
                 setReviews(data);
             })
             .catch((error) => console.error('Error fetching reviews:', error));
     }, []);
 
-    // Handle form input changes
-    const handleChange = (e) => {
-        const { name, value } = e.target;
+    const handleStarClick = (name, value) => {
         setFormData((prevData) => ({
             ...prevData,
             [name]: value,
         }));
     };
 
-    // Handle form submission
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        if (!formData.JobId || !formData.InvoiceId || !formData.ReviewerId || !formData.Comment) {
+        if (!formData.Comment) {
             alert('Please fill in all required fields.');
             return;
         }
@@ -55,7 +49,7 @@ const ReviewCreate = () => {
                 if (contentType && contentType.includes('application/json')) {
                     return response.json();
                 } else {
-                    return response.text(); // Handle plain text responses
+                    return response.text(); 
                 }
             })
             .then((data) => {
@@ -64,12 +58,11 @@ const ReviewCreate = () => {
                 } else {
                     setReviews((prevReviews) => [...prevReviews, data]);
                     setFormData({
-                        JobId: '',
-                        InvoiceId: '',
-                        ReviewerId: '',
-                        WorkRating: '',
-                        CustomerServiceRating: '',
-                        PriceRating: '',
+                        JobId: job?.id || '',
+                        ReviewerId: userId || '',
+                        WorkRating: 0,
+                        CustomerServiceRating: 0,
+                        PriceRating: 0,
                         Comment: '',
                     });
                 }
@@ -79,69 +72,68 @@ const ReviewCreate = () => {
 
     return (
         <div>
-            <h2>Reviews</h2>
+            <h1>Create Review for {job?.jobTitle}</h1>
             <form onSubmit={handleSubmit}>
-                <input
-                    type="text"
-                    name="JobId"
-                    value={formData.JobId}
-                    onChange={handleChange}
-                    placeholder="Job ID"
-                    required
-                />
+                <div>
+                    <label>Work Rating:</label>
+                    {[1, 2, 3, 4, 5].map((value) => (
+                        <span
+                            key={value}
+                            onClick={() => handleStarClick('WorkRating', value)}
+                            style={{
+                                cursor: 'pointer',
+                                color: formData.WorkRating >= value ? 'gold' : 'gray',
+                                fontSize: '24px',
+                            }}
+                        >
+                            ★
+                        </span>
+                    ))}
+                </div>
                 <br />
-                <input
-                    type="text"
-                    name="InvoiceId"
-                    value={formData.InvoiceId}
-                    onChange={handleChange}
-                    placeholder="Invoice ID"
-                    required
-                />
+                <div>
+                    <label>Customer Service Rating:</label>
+                    {[1, 2, 3, 4, 5].map((value) => (
+                        <span
+                            key={value}
+                            onClick={() => handleStarClick('CustomerServiceRating', value)}
+                            style={{
+                                cursor: 'pointer',
+                                color: formData.CustomerServiceRating >= value ? 'gold' : 'gray',
+                                fontSize: '24px',
+                            }}
+                        >
+                            ★
+                        </span>
+                    ))}
+                </div>
                 <br />
-                <input
-                    type="number"
-                    name="ReviewerId"
-                    value={formData.ReviewerId}
-                    onChange={handleChange}
-                    placeholder="Reviewer ID"
-                    required
-                />
-                <br />
-                <input
-                    type="number"
-                    name="WorkRating"
-                    value={formData.WorkRating}
-                    onChange={handleChange}
-                    placeholder="Work Rating (1-5)"
-                    min="1"
-                    max="5"
-                />
-                <br />
-                <input
-                    type="number"
-                    name="CustomerServiceRating"
-                    value={formData.CustomerServiceRating}
-                    onChange={handleChange}
-                    placeholder="Customer Service Rating (1-5)"
-                    min="1"
-                    max="5"
-                />
-                <br />
-                <input
-                    type="number"
-                    name="PriceRating"
-                    value={formData.PriceRating}
-                    onChange={handleChange}
-                    placeholder="Price Rating (1-5)"
-                    min="1"
-                    max="5"
-                />
+                <div>
+                    <label>Price Rating:</label>
+                    {[1, 2, 3, 4, 5].map((value) => (
+                        <span
+                            key={value}
+                            onClick={() => handleStarClick('PriceRating', value)}
+                            style={{
+                                cursor: 'pointer',
+                                color: formData.PriceRating >= value ? 'green' : 'gray',
+                                fontSize: '24px',
+                            }}
+                        >
+                            $
+                        </span>
+                    ))}
+                </div>
                 <br />
                 <textarea
                     name="Comment"
                     value={formData.Comment}
-                    onChange={handleChange}
+                    onChange={(e) =>
+                        setFormData((prevData) => ({
+                            ...prevData,
+                            Comment: e.target.value,
+                        }))
+                    }
                     placeholder="Write your review here..."
                     rows="4"
                     cols="50"
@@ -150,7 +142,6 @@ const ReviewCreate = () => {
                 <br />
                 <button type="submit">Submit Review</button>
             </form>
-           
         </div>
     );
 };

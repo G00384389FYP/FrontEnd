@@ -33,15 +33,16 @@ function TradesmanCentre() {
             try {
                 const response = await fetch(`${API}/jobs/tradesman/${userId}`);
                 const data = await response.json();
+                console.log('Assigned Jobs:', data);  
                 if (Array.isArray(data)) {
                     setAssignedJobs(data);
                 } else {
                     console.error('Expected an array but received:', data);
-                    setAssignedJobs([]); // Fallback to an empty array
+                    setAssignedJobs([]);  
                 }
             } catch (error) {
                 console.error('Error fetching assigned jobs:', error);
-                setAssignedJobs([]); // Fallback to an empty array
+                setAssignedJobs([]);  
             }
         };
 
@@ -57,12 +58,27 @@ function TradesmanCentre() {
             }
         };
 
-
+        const fetchCompletedJobs = async () => {
+            try {
+                const response = await fetch(`${API}/jobs/tradesman/${userId}/completed`);
+                const data = await response.json();
+                if (Array.isArray(data)) {
+                    setFinishedJobs(data);
+                } else {
+                    console.error('Expected an array but received:', data);
+                    setFinishedJobs([]);  
+                }
+            } catch (error) {
+                console.error('Error fetching completed jobs:', error);
+                setFinishedJobs([]);  
+            }
+        };
 
         if (userId) {
             fetchJobs();
             fetchAssignedJobs();
             fetchApplications();
+            fetchCompletedJobs();
         }
     }, [userId]);
 
@@ -101,7 +117,6 @@ function TradesmanCentre() {
         }
     };
 
-
     const handleInvoice = async (jobId) => {
         if (window.confirm('Are you sure you want to invoice for this job?'))
             try {
@@ -114,8 +129,6 @@ function TradesmanCentre() {
             }
     };
 
-    const pendingApplications = applications.filter(app => app.status === 'pending');
-    const otherApplications = applications.filter(app => app.status !== 'pending');
 
     return (
         <div>
@@ -129,40 +142,31 @@ function TradesmanCentre() {
                         <h1>My Active Tradesman Jobs</h1>
                         <div className="job-applications-container">
                             {Array.isArray(assignedJobs) && assignedJobs.map((job) => (
-                                <Card key={job.id} className="job-card job-card-wide">
-                                    <div className="job-card-flex">
+                                <Card key={job.id}>
+                                    <div>
                                         <CardMedia
                                             component="img"
                                             height="140"
                                             image={job.jobImage}
                                             alt="job image"
-                                            className="job-card-media"
                                         />
-                                        <CardContent className="job-card-content">
-                                            <Typography gutterBottom variant="h5" component="div" className="job-card-title">
-                                                {job.jobTitle}
-                                            </Typography>
-                                            <Typography variant="body2" className="job-card-description">
-                                                {job.jobDescription}
-                                            </Typography>
-                                            <Typography variant="body2" className="job-card-details">
-                                                Location: {job.jobLocation}
-                                            </Typography>
-                                            <Typography variant="body2" className="job-card-details">
-                                                Trade Required: {job.tradesRequired}
-                                            </Typography>
-                                            <Button variant="contained" color="primary" onClick={() => handleCompleteJob(job.id)}>
-                                                Mark as Complete
-                                            </Button>
+                                        <CardContent>
+                                            <Typography variant="h5">{job.jobTitle || 'No Title Available'}</Typography>
+                                            <Typography>{job.jobDescription || 'No Description Available'}</Typography>
+                                            <Typography>Location: {job.jobLocation || 'No Location Provided'}</Typography>
+                                            <Typography>Trade Required: {job.tradesRequired || 'No Trade Specified'}</Typography>
                                         </CardContent>
                                     </div>
+                                    <Button variant="contained" color="primary" onClick={() => handleCompleteJob(job.id)}>
+                                        Mark as Complete
+                                    </Button>
                                 </Card>
                             ))}
                         </div>
                     </div>
 
                     <div>
-                        <h1>Completed Jobs Jobs</h1>
+                        <h1>Completed Jobs</h1>
                         <div className="job-applications-container">
                             {finishedJobs.map((job) => (
                                 <Card key={job.id} className="job-card job-card-wide">
@@ -176,16 +180,16 @@ function TradesmanCentre() {
                                         />
                                         <CardContent className="job-card-content">
                                             <Typography gutterBottom variant="h5" component="div" className="job-card-title">
-                                                {job.jobTitle}
+                                                {job.jobTitle || 'No Title Available'}
                                             </Typography>
                                             <Typography variant="body2" className="job-card-description">
-                                                {job.jobDescription}
+                                                {job.jobDescription || 'No Description Available'}
                                             </Typography>
                                             <Typography variant="body2" className="job-card-details">
-                                                Location: {job.jobLocation}
+                                                Location: {job.jobLocation || 'No Location Provided'}
                                             </Typography>
                                             <Typography variant="body2" className="job-card-details">
-                                                Trade Required: {job.tradesRequired}
+                                                Trade Required: {job.tradesRequired || 'No Trade Specified'}
                                             </Typography>
                                             <Button variant="contained" color="primary" onClick={() => handleInvoice(job.id)}>
                                                 Invoice

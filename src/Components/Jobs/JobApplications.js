@@ -124,10 +124,6 @@ function CustomerCentre() {
         }
     };
 
-    const handleReviewCreate = (job) => {        
-        navigate(`/reviews/new`, { state: { userId, job } });
-    };
-
 
     const pendingApplications = applications.filter(app => app.status === 'pending');
     const otherApplications = applications.filter(app => app.status !== 'pending');
@@ -264,7 +260,6 @@ function CustomerCentre() {
                                     
                                 </CardContent>
                             </div>
-                            <button onClick={() =>handleReviewCreate(job)}>Review</button>
                         </Card>
                     ))}
                 </div>

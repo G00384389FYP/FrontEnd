@@ -26,29 +26,43 @@ function JobPosting() {
     };
 
     const handleFileChange = (e) => {
-        setImageFile(e.target.files[0]); 
+        const file = e.target.files[0];
+        if (file) {
+            console.log('Selected file:', file);
+            setImageFile(file);
+        } else {
+            console.error('No file selected.');
+        }
     };
 
     const uploadImageToBlob = async (file) => {
+        if (!file) {
+            console.error('No file selected for upload.');
+            return;
+        }
+    
         try {
             const formData = new FormData();
-            formData.append('file', file); 
-
+            formData.append('file', file);
+            formData.append('FileName', file.name); 
+    
             for (let [key, value] of formData.entries()) {
-                console.log(`${key}:`, value);
+                console.log(`${key}:`, value); 
             }
-
+    
             const response = await fetch(`${API}/jobs/image`, {
                 method: 'POST',
                 body: formData,
             });
-
+    
             if (!response.ok) {
+                const errorDetails = await response.text();
+                console.error(`HTTP error! status: ${response.status}, details: ${errorDetails}`);
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
-
+    
             const data = await response.json();
-            return data.url; 
+            return data.url;
         } catch (error) {
             console.error('Error uploading image:', error);
             throw error;
@@ -58,10 +72,15 @@ function JobPosting() {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        // Validation: Check if all fields are filled
+        
         if (!jobDetails.JobTitle || !jobDetails.JobDescription || !jobDetails.TradesRequired || !jobDetails.JobLocation || (!jobDetails.JobImage && !imageFile)) {
             alert('Please fill out all fields before submitting the form.');
             return;
+        }
+
+        const isConfirmed = window.confirm('Are you sure you want to post this job?');
+        if (!isConfirmed) {
+            return; 
         }
 
         if (!userId) {
