@@ -1,0 +1,139 @@
+.review-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+}
+
+.review-title {
+    text-align: center;
+    color: #333;
+}
+
+.review-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.rating-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.rating-label {
+    font-weight: bold;
+    font-size: 18px;
+    position: relative;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.info-icon {
+    display: inline-block;
+    margin-left: 10px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: #007BFF;
+    color: #fff;
+    text-align: center;
+    line-height: 20px;
+    font-size: 14px;
+    cursor: pointer;
+    position: relative;
+}
+
+.tooltip {
+    position: absolute;
+    left: 105%;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 5px 10px;
+    font-size: 14px;
+    color: #555;
+    white-space: nowrap;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    z-index: 10;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.tooltip.show {
+    opacity: 1;
+    visibility: visible;
+    animation: slide-in-out 7s ease forwards;
+}
+
+@keyframes slide-in-out {
+    0% {
+        transform: translateY(-50%) translateX(-10px);
+        opacity: 0;
+    }
+    10% {
+        transform: translateY(-50%) translateX(0);
+        opacity: 1;
+    }
+    90% {
+        transform: translateY(-50%) translateX(0);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-50%) translateX(-10px);
+        opacity: 0;
+    }
+}
+
+.rating-stars {
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+}
+
+.rating-stars span {
+    cursor: pointer;
+    font-size: 24px;
+    margin: 0 5px;
+}
+
+.rating-stars .gold {
+    color: gold;
+}
+
+.rating-stars .gray {
+    color: gray;
+}
+
+.rating-stars .green {
+    color: green;
+}
+
+.comment-box {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+}
+
+.submit-button {
+    padding: 10px 20px;
+    background-color: #007BFF;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.comment-label {
+    font-weight: bold;
+    font-size: 18px;
+    position: relative;    
+}

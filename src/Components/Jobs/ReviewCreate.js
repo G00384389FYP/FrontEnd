@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import API from '../../Api';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
+import './Reviews.css';
 
 const ReviewCreate = () => {
     const location = useLocation();
-    const { job, userId } = location.state || {}; 
-    const [reviews, setReviews] = useState([]);
+    const navigate = useNavigate();
+    const { job, userId } = location.state || {};
     const [formData, setFormData] = useState({
         JobId: job?.id || '',
         ReviewerId: userId || '',
@@ -14,21 +15,26 @@ const ReviewCreate = () => {
         PriceRating: 0,
         Comment: '',
     });
-
-    useEffect(() => {
-        fetch(`${API}/reviews`)
-            .then((response) => response.json())
-            .then((data) => {
-                setReviews(data);
-            })
-            .catch((error) => console.error('Error fetching reviews:', error));
-    }, []);
+    const [info, setInfo] = useState({});
 
     const handleStarClick = (name, value) => {
         setFormData((prevData) => ({
             ...prevData,
             [name]: value,
         }));
+    };
+
+    const handleInfoClick = (ratingType) => {
+        setInfo((prevInfo) => ({
+            ...prevInfo,
+            [ratingType]: true,
+        }));
+        setTimeout(() => {
+            setInfo((prevInfo) => ({
+                ...prevInfo,
+                [ratingType]: false,
+            }));
+        }, 7000); 
     };
 
     const handleSubmit = (e) => {
@@ -49,14 +55,14 @@ const ReviewCreate = () => {
                 if (contentType && contentType.includes('application/json')) {
                     return response.json();
                 } else {
-                    return response.text(); 
+                    return response.text();
                 }
             })
             .then((data) => {
                 if (typeof data === 'string') {
                     alert(data);
+                    navigate('/customer-centre');
                 } else {
-                    setReviews((prevReviews) => [...prevReviews, data]);
                     setFormData({
                         JobId: job?.id || '',
                         ReviewerId: userId || '',
@@ -65,66 +71,94 @@ const ReviewCreate = () => {
                         PriceRating: 0,
                         Comment: '',
                     });
+                    navigate('/customer-centre');
                 }
             })
             .catch((error) => console.error('Error submitting review:', error));
     };
 
     return (
-        <div>
-            <h1>Create Review for {job?.jobTitle}</h1>
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <label>Work Rating:</label>
-                    {[1, 2, 3, 4, 5].map((value) => (
+        <div className="review-container">
+            <h1 className="review-title">Create Review for {job?.jobTitle}</h1>
+            <form onSubmit={handleSubmit} className="review-form">
+                <div className="rating-section">
+                    <label className="rating-label">
+                        Work Rating
                         <span
-                            key={value}
-                            onClick={() => handleStarClick('WorkRating', value)}
-                            style={{
-                                cursor: 'pointer',
-                                color: formData.WorkRating >= value ? 'gold' : 'gray',
-                                fontSize: '24px',
-                            }}
+                            onClick={() => handleInfoClick('WorkRating')}
+                            className="info-icon"
                         >
-                            ★
+                            i
                         </span>
-                    ))}
+                        <span className={`tooltip ${info.WorkRating ? 'show' : ''}`}>
+                            Rate the quality of the work completed.
+                        </span>
+                    </label>
+                    <div className="rating-stars">
+                        {[1, 2, 3, 4, 5].map((value) => (
+                            <span
+                                key={value}
+                                onClick={() => handleStarClick('WorkRating', value)}
+                                className={formData.WorkRating >= value ? 'gold' : 'gray'}
+                            >
+                                ★
+                            </span>
+                        ))}
+                    </div>
                 </div>
-                <br />
-                <div>
-                    <label>Customer Service Rating:</label>
-                    {[1, 2, 3, 4, 5].map((value) => (
+
+                <div className="rating-section">
+                    <label className="rating-label">
+                        Customer Service Rating
                         <span
-                            key={value}
-                            onClick={() => handleStarClick('CustomerServiceRating', value)}
-                            style={{
-                                cursor: 'pointer',
-                                color: formData.CustomerServiceRating >= value ? 'gold' : 'gray',
-                                fontSize: '24px',
-                            }}
+                            onClick={() => handleInfoClick('CustomerServiceRating')}
+                            className="info-icon"
                         >
-                            ★
+                            i
                         </span>
-                    ))}
+                        <span className={`tooltip ${info.CustomerServiceRating ? 'show' : ''}`}>
+                            Rate the quality of customer service provided.
+                        </span>
+                    </label>
+                    <div className="rating-stars">
+                        {[1, 2, 3, 4, 5].map((value) => (
+                            <span
+                                key={value}
+                                onClick={() => handleStarClick('CustomerServiceRating', value)}
+                                className={formData.CustomerServiceRating >= value ? 'gold' : 'gray'}
+                            >
+                                ★
+                            </span>
+                        ))}
+                    </div>
                 </div>
-                <br />
-                <div>
-                    <label>Price Rating:</label>
-                    {[1, 2, 3, 4, 5].map((value) => (
+
+                <div className="rating-section">
+                    <label className="rating-label">
+                        Price Rating
                         <span
-                            key={value}
-                            onClick={() => handleStarClick('PriceRating', value)}
-                            style={{
-                                cursor: 'pointer',
-                                color: formData.PriceRating >= value ? 'green' : 'gray',
-                                fontSize: '24px',
-                            }}
+                            onClick={() => handleInfoClick('PriceRating')}
+                            className="info-icon"
                         >
-                            $
+                            i
                         </span>
-                    ))}
+                        <span className={`tooltip ${info.PriceRating ? 'show' : ''}`}>
+                            Rate the fairness of the price charged.
+                        </span>
+                    </label>
+                    <div className="rating-stars">
+                        {[1, 2, 3].map((value) => (
+                            <span
+                                key={value}
+                                onClick={() => handleStarClick('PriceRating', value)}
+                                className={formData.PriceRating >= value ? 'green' : 'gray'}
+                            >
+                                $
+                            </span>
+                        ))}
+                    </div>
                 </div>
-                <br />
+                <label className="comment-label">Comments</label>
                 <textarea
                     name="Comment"
                     value={formData.Comment}
@@ -138,9 +172,11 @@ const ReviewCreate = () => {
                     rows="4"
                     cols="50"
                     required
+                    className="comment-box"
                 />
-                <br />
-                <button type="submit">Submit Review</button>
+                <button type="submit" className="submit-button">
+                    Submit Review
+                </button>
             </form>
         </div>
     );
