@@ -112,6 +112,9 @@ function MyProfiles() {
                                     <strong>Number of Jobs Completed:</strong> {tradesmanProfile.numberOfJobsCompleted}
                                 </Typography>
                                 <Typography variant="body2" color="text.secondary">
+                                    <strong>Trade Bio:</strong> {tradesmanProfile.tradeBio}
+                                </Typography>
+                                <Typography variant="body2" color="text.secondary">
                                     <strong>Join Date:</strong> {tradesmanProfile.dateJoined}
                                 </Typography>
                             </CardContent>

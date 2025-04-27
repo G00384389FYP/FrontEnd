@@ -121,6 +121,7 @@ const Finances = () => {
                                 <p><strong>Tradesman ID:</strong> {invoice.tradesmanId}</p>
                                 <p><strong>Amount:</strong> €{(invoice.amount / 100).toFixed(2)}</p>
                                 <p><strong>Due Date:</strong> {invoice.dueDate}</p>
+                                <p><strong>Type:</strong> {invoice.paymentType}</p>
                                 <p><strong>Status:</strong> {invoice.status}</p>
                                 <p><strong>Invoice ID:</strong> {invoice.invoiceId}</p>
                                 <p><strong>Job ID:</strong> {invoice.jobId}</p>

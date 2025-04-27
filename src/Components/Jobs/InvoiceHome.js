@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { useParams } from 'react-router-dom';
+import { Navigate, useParams } from 'react-router-dom';
 import { UserContext } from '../../UserContext'; 
 import API from '../../Api';
 import "../Jobs.css"; 
@@ -60,8 +60,9 @@ function InvoiceHome() {
 
             if (response.ok) {
                 const data = await response.json();
-                console.log("Invoice submitted successfully:", data);
+                // console.log("Invoice submitted successfully:", data);
                 alert("Invoice submitted successfully!");
+                Navigate(`/finances`);
             } else {
                 console.error("Failed to submit invoice:", response.statusText);
                 alert("Failed to submit invoice. Please try again.");
